@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Life Lab - 더 나은 일상을 위한 앱</title>
+    <meta name="description" content="Easy Life Lab은 일상을 더 편리하게 만드는 모바일 앱을 개발합니다.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Easy Life Lab</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">홈</a></li>
+                    <li><a href="#apps">앱</a></li>
+                    <li><a href="#about">소개</a></li>
+                    <li><a href="#contact">문의</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>더 나은 일상을 위한 앱</h2>
+                <p>Easy Life Lab은 여러분의 일상을 더 편리하게 만드는 모바일 앱을 개발합니다.</p>
+                <a href="#apps" class="btn">앱 살펴보기</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="apps" class="apps">
+        <div class="container">
+            <h2 class="section-title">우리의 앱</h2>
+            <div class="app-grid">
+                <!-- Toilet Password -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="images/toilet_password_icon.png" alt="Toilet Password 앱 아이콘">
+                    </div>
+                    <div class="app-info">
+                        <h3>Toilet Password</h3>
+                        <p>화장실 비밀번호를 안전하게 저장하고 관리하세요.</p>
+                        <div class="app-tech">
+                            <span class="tech-tag">Flutter</span>
+                        </div>
+                        <div class="app-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.youngki_home.toilet_password" target="_blank" class="store-link">
+                                <img src="images/google_play_badge.png" alt="Google Play">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 맛도리 지도 -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="images/tasty_map_icon.png" alt="맛도리 지도 앱 아이콘">
+                    </div>
+                    <div class="app-info">
+                        <h3>맛도리 지도</h3>
+                        <p>맛집을 쉽게 찾고 저장할 수 있는 지도 기반 앱입니다.</p>
+                        <div class="app-tech">
+                            <span class="tech-tag">GIS</span>
+                            <span class="tech-tag">Web Crawler</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                        </div>
+                        <div class="app-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.youngkiu.tasty_map" target="_blank" class="store-link">
+                                <img src="images/google_play_badge.png" alt="Google Play">
+                            </a>
+                            <a href="https://apps.apple.com/us/app/맛도리-지도/id6471900309" target="_blank" class="store-link">
+                                <img src="images/app_store_badge.png" alt="App Store">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카드 뭐내지? -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="images/card_alarm_icon.png" alt="카드 뭐내지? 앱 아이콘">
+                    </div>
+                    <div class="app-info">
+                        <h3>카드 뭐내지?</h3>
+                        <p>신용카드 결제일 알림 서비스로 연체를 방지하세요.</p>
+                        <div class="app-tech">
+                            <span class="tech-tag">App Push</span>
+                            <span class="tech-tag">MariaDB</span>
+                        </div>
+                        <div class="app-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.youngkiu.card_alarm" target="_blank" class="store-link">
+                                <img src="images/google_play_badge.png" alt="Google Play">
+                            </a>
+                            <a href="https://www.youtube.com/@CreditCardAlarm" target="_blank" class="youtube-link">
+                                <i class="fab fa-youtube"></i> 소개 영상
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 종점 출발 버스 -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="images/busdeparture_icon.png" alt="종점 출발 버스 앱 아이콘">
+                    </div>
+                    <div class="app-info">
+                        <h3>종점 출발 버스</h3>
+                        <p>버스 종점 출발 정보를 실시간으로 확인하세요.</p>
+                        <div class="app-tech">
+                            <span class="tech-tag">GraphQL</span>
+                            <span class="tech-tag">MongoDB</span>
+                        </div>
+                        <div class="app-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.youngkiu.busdeparture" target="_blank" class="store-link">
+                                <img src="images/google_play_badge.png" alt="Google Play">
+                            </a>
+                            <a href="https://apps.apple.com/kr/app/종점-출발-버스/id6736763977" target="_blank" class="store-link">
+                                <img src="images/app_store_badge.png" alt="App Store">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 복용일지 -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="images/medication_diary_icon.png" alt="복용일지 앱 아이콘">
+                    </div>
+                    <div class="app-info">
+                        <h3>복용일지</h3>
+                        <p>약 복용 기록을 관리하고 알림을 받으세요.</p>
+                        <div class="app-tech">
+                            <span class="tech-tag">i18n(l10n)</span>
+                            <span class="tech-tag">Firebase</span>
+                        </div>
+                        <div class="app-links">
+                            <span class="coming-soon">Android/iOS 출시 예정</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">Easy Life Lab 소개</h2>
+            <div class="about-content">
+                <p>Easy Life Lab은 사용자의 일상을 더 편리하게 만드는 모바일 앱을 개발하는 팀입니다. 우리는 사용자의 실제 문제를 해결하는 실용적인 앱을 만들기 위해 노력합니다.</p>
+                <p>현재 5개의 앱을 개발하여 서비스 중이며, 계속해서 새로운 아이디어를 발굴하고 있습니다. 우리의 목표는 기술을 통해 사람들의 일상을 더 쉽고 편리하게 만드는 것입니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">문의하기</h2>
+            <div class="contact-content">
+                <p>문의사항이나 제안이 있으시면 아래 이메일로 연락해 주세요.</p>
+                <a href="mailto:contact@easylifelab.com" class="email-link">contact@easylifelab.com</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>Easy Life Lab</h3>
+                </div>
+                <div class="footer-links">
+                    <ul>
+                        <li><a href="privacy/toilet_password.html">Toilet Password 개인정보처리방침</a></li>
+                        <li><a href="privacy/tasty_map.html">맛도리 지도 개인정보처리방침</a></li>
+                        <li><a href="privacy/card_alarm.html">카드 뭐내지? 개인정보처리방침</a></li>
+                        <li><a href="privacy/busdeparture.html">종점 출발 버스 개인정보처리방침</a></li>
+                        <li><a href="privacy/medication_diary.html">복용일지 개인정보처리방침</a></li>
+                    </ul>
+                </div>
+                <div class="footer-copyright">
+                    <p>&copy; 2024 Easy Life Lab. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
