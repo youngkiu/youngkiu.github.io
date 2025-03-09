@@ -272,6 +272,17 @@ nav ul li a:hover::after {
     object-fit: contain;
 }
 
+/* Specific styling for Google Play badge to match Apple badge height */
+.store-link img[src*="google_play_badge"] {
+    height: 60px;
+    width: auto;
+}
+
+.store-link img[src*="app_store_badge"] {
+    height: 40px;
+    width: auto;
+}
+
 .youtube-link {
     display: flex;
     align-items: center;
