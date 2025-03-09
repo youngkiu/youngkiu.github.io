@@ -257,11 +257,19 @@ nav ul li a:hover::after {
 .app-links {
     display: flex;
     align-items: center;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.store-link {
+    display: inline-block;
 }
 
 .store-link img {
-    height: 40px;
+    height: auto;
+    width: 135px;
+    object-fit: contain;
 }
 
 .youtube-link {
