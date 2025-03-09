@@ -46,7 +46,7 @@ Easy Life Lab은 사용자의 일상을 더 편리하게 만드는 모바일 앱
 
 ## 연락처
 
-문의사항이 있으시면 contact@easylifelab.com으로 연락해 주세요.
+문의사항이 있으시면 easylifelab.developer@gmail.com으로 연락해 주세요.
 
 ## 라이센스
 
