@@ -268,7 +268,7 @@ nav ul li a:hover::after {
 
 .store-link img {
     height: auto;
-    width: 135px;
+    width: 120px;
     object-fit: contain;
 }
 
