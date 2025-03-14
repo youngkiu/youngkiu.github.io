@@ -108,6 +108,18 @@ header .container {
     align-items: center;
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 8px;
+}
+
 .logo h1 {
     font-size: 1.8rem;
     color: var(--primary-color);
@@ -360,9 +372,22 @@ footer {
     gap: 30px;
 }
 
+.footer-logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.footer-logo-img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    border-radius: 6px;
+}
+
 .footer-logo h3 {
-    font-size: 1.8rem;
-    color: white;
+    font-size: 1.5rem;
+    color: var(--primary-color);
 }
 
 .footer-links ul {
