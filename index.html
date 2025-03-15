@@ -6,9 +6,12 @@
     <title>복용일지 - Easy Life Lab</title>
     <meta name="description" content="복용일지 앱으로 약 복용 기록을 간편하게 관리하세요. Easy Life Lab에서 제공합니다.">
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://easylifelab.site/">
+
     <!-- Favicon -->
-    <link rel="icon" href="images/optimized/medication_diary_icon_optimized.png">
-    <link rel="apple-touch-icon" href="images/optimized/medication_diary_icon_optimized.png">
+    <link rel="icon" href="app_logo.png">
+    <link rel="apple-touch-icon" href="app_logo.png">
 
     <!-- Google Analytics 추적 코드 -->
     <!-- Google tag (gtag.js) -->
@@ -26,26 +29,52 @@
     <meta property="og:url" content="https://easylifelab.site/">
     <meta property="og:title" content="복용일지 - Easy Life Lab">
     <meta property="og:description" content="복용일지 앱으로 약 복용 기록을 간편하게 관리하세요. Easy Life Lab에서 제공합니다.">
-    <meta property="og:image" content="https://easylifelab.site/images/optimized/medication_diary_icon_optimized.png">
+    <meta property="og:image" content="https://easylifelab.site/app_logo.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://easylifelab.site/">
     <meta property="twitter:title" content="복용일지 - Easy Life Lab">
     <meta property="twitter:description" content="복용일지 앱으로 약 복용 기록을 간편하게 관리하세요. Easy Life Lab에서 제공합니다.">
-    <meta property="twitter:image" content="https://easylifelab.site/images/optimized/medication_diary_icon_optimized.png">
+    <meta property="twitter:image" content="https://easylifelab.site/app_logo.png">
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "복용일지",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Android, iOS",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "description": "약 복용 기록을 간편하게 관리하는 앱입니다. 주기적으로 먹는 약에 대해 기록을 남기고 관리할 수 있습니다.",
+      "image": "https://easylifelab.site/app_logo.png",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Easy Life Lab",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://easylifelab.site/app_logo.png"
+        }
+      }
+    }
+    </script>
 </head>
 <body>
     <header>
         <div class="container">
             <div class="logo">
-                <img src="images/optimized/medication_diary_icon_optimized.png" alt="복용일지 로고" class="logo-img">
+                <img src="app_logo.png" alt="복용일지 로고" class="logo-img">
                 <div class="logo-text">
                     <h1>복용일지</h1>
                     <span>by Easy Life Lab</span>
@@ -68,10 +97,10 @@
     <section id="home" class="hero">
         <div class="container">
             <div class="hero-content">
-                <img src="images/optimized/medication_diary_icon_optimized.png" alt="복용일지 로고" class="hero-logo">
+                <img src="app_logo.png" alt="복용일지 로고" class="hero-logo">
                 <h2>복용일지</h2>
                 <p>약 복용 기록을 간편하게 관리하세요.</p>
-                <p>주기적으로 먹는 약에 대해, 약의 주기와 함께 사용자 버튼을 생성하여, 약을 먹을때 마다 생성된 버튼을 눌러, 구글 캘린더에 기록합니다.</p>
+                <p>주기적으로 먹는 약에 대해, 약의 주기와 함께 사용자 버튼을 생성하여, 약을 먹을때 마다 생성된 버튼을 눌러, 캘린더에 기록합니다.</p>
                 <p><small>Easy Life Lab에서 제공하는 서비스입니다.</small></p>
                 <a href="#apps" class="btn">앱 살펴보기</a>
             </div>
@@ -82,6 +111,24 @@
         <div class="container">
             <h2 class="section-title">우리의 앱</h2>
             <div class="app-grid">
+                <!-- 복용일지 -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="app_logo.png" alt="복용일지 앱 아이콘">
+                    </div>
+                    <div class="app-info">
+                        <h3>복용일지</h3>
+                        <p>주기적으로 먹는 약에 대해, 약의 주기와 함께 사용자 버튼을 생성하여, 약을 먹을때 마다 생성된 버튼을 눌러, 캘린더에 기록합니다. 약 뿐만 아니라, 주기적으로 발생하는 이벤트(칫솔/면도날 교환)도 약과 비슷하게 버튼을 만들어, 발생시 마다 버튼을 눌러 기록할 수 있습니다.</p>
+                        <div class="app-tech">
+                            <span class="tech-tag">i18n(l10n)</span>
+                            <span class="tech-tag">Firebase</span>
+                        </div>
+                        <div class="app-links">
+                            <span class="coming-soon">Android/iOS 출시 예정</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Toilet Password -->
                 <div class="app-card">
                     <div class="app-icon">
@@ -170,24 +217,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- 복용일지 -->
-                <div class="app-card">
-                    <div class="app-icon">
-                        <img src="images/optimized/medication_diary_icon_optimized.png" alt="복용일지 앱 아이콘">
-                    </div>
-                    <div class="app-info">
-                        <h3>복용일지</h3>
-                        <p>주기적으로 먹는 약에 대해, 약의 주기와 함께 사용자 버튼을 생성하여, 약을 먹을때 마다 생성된 버튼을 눌러, 구글 캘린더에 기록합니다. 약 뿐만 아니라, 주기적으로 발생하는 이벤트(칫솔/면도날 교환)도 약과 비슷하게 버튼을 만들어, 발생시 마다 버튼을 눌러 기록할 수 있습니다.</p>
-                        <div class="app-tech">
-                            <span class="tech-tag">i18n(l10n)</span>
-                            <span class="tech-tag">Firebase</span>
-                        </div>
-                        <div class="app-links">
-                            <span class="coming-soon">Android/iOS 출시 예정</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -216,7 +245,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <img src="images/optimized/medication_diary_icon_optimized.png" alt="복용일지 로고" class="footer-logo-img">
+                    <img src="app_logo.png" alt="복용일지 로고" class="footer-logo-img">
                     <div class="footer-logo-text">
                         <h3>복용일지</h3>
                         <span>by Easy Life Lab</span>
