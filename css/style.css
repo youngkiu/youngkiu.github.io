@@ -120,10 +120,21 @@ header .container {
     border-radius: 8px;
 }
 
-.logo h1 {
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-text h1 {
     font-size: 1.8rem;
     color: var(--primary-color);
     font-weight: 700;
+    line-height: 1.2;
+}
+
+.logo-text span {
+    font-size: 0.9rem;
+    color: var(--gray-color);
 }
 
 nav ul {
@@ -176,6 +187,14 @@ nav ul li a:hover::after {
 .hero-content {
     max-width: 800px;
     margin: 0 auto;
+}
+
+.hero-logo {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .hero-content h2 {
@@ -385,9 +404,20 @@ footer {
     border-radius: 6px;
 }
 
-.footer-logo h3 {
+.footer-logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-logo-text h3 {
     font-size: 1.5rem;
     color: var(--primary-color);
+    line-height: 1.2;
+}
+
+.footer-logo-text span {
+    font-size: 0.8rem;
+    color: #9aa0a6;
 }
 
 .footer-links ul {
