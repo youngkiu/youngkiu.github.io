@@ -17,7 +17,7 @@ Easy Life Lab은 사용자의 일상을 더 편리하게 만드는 모바일 앱
    - [Android 다운로드](https://play.google.com/store/apps/details?id=com.youngkiu.tasty_map)
    - [iOS 다운로드](https://apps.apple.com/us/app/맛도리-지도/id6471900309)
 
-3. **카드 뭐내지?** - 신용카드 결제일 알림 서비스
+3. **카드 뭐 내지?** - 신용카드 결제일 알림 서비스
    - 기술 스택: App Push, MariaDB
    - [Android 다운로드](https://play.google.com/store/apps/details?id=com.youngkiu.card_alarm)
    - [소개 영상](https://www.youtube.com/@CreditCardAlarm)

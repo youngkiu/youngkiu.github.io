@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객 지원 센터 - Easy Life Lab</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        .support-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .support-form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .success-message {
+            display: none;
+            color: green;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .error-message {
+            display: none;
+            color: red;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="support-container">
+        <h1>고객 지원 센터</h1>
+        <p>Easy Life Lab의 앱에 대한 문의사항이나 제안을 보내주세요.</p>
+
+        <div class="support-form-container">
+            <form id="supportForm">
+                <div class="form-group">
+                    <label for="appName">앱 선택</label>
+                    <select id="appName" name="appName" required>
+                        <option value="">앱을 선택해주세요</option>
+                        <option value="복용일지">복용일지</option>
+                        <option value="종점 출발 버스">종점 출발 버스</option>
+                        <option value="카드 뭐 내지?">카드 뭐 내지?</option>
+                        <option value="맛도리 지도">맛도리 지도</option>
+                        <option value="Toilet Password">Toilet Password</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="requestType">요청 유형</label>
+                    <select id="requestType" name="requestType" required>
+                        <option value="">선택해주세요</option>
+                        <option value="버그 신고">버그 신고</option>
+                        <option value="기능 요청">기능 요청</option>
+                        <option value="문의">문의</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">이메일 주소</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">제목</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">내용</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+
+                <button type="submit">보내기</button>
+            </form>
+
+            <div id="successMessage" class="success-message">
+                메시지가 성공적으로 전송되었습니다. 답변을 기다려주세요.
+            </div>
+
+            <div id="errorMessage" class="error-message">
+                메시지 전송 중 오류가 발생했습니다. 다시 시도해주세요.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            emailjs.init("24DG2LVNaMHVQ3J8G");
+        })();
+
+        document.getElementById('supportForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const appSelect = document.getElementById('appName').value;
+            const requestType = document.getElementById('requestType').value;
+            const userEmail = document.getElementById('email').value;
+            const requestTitle = document.getElementById('subject').value;
+            const requestContent = document.getElementById('message').value;
+
+            const formData = {
+                app_select: appSelect,
+                reason: requestContent,
+                user_email: userEmail,
+                request_title: requestTitle
+            };
+
+            emailjs.send('service_nh853ha', 'template_js4xv63', formData)
+                .then(function() {
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('errorMessage').style.display = 'none';
+                    document.getElementById('supportForm').reset();
+                }, function(error) {
+                    document.getElementById('errorMessage').style.display = 'block';
+                    document.getElementById('successMessage').style.display = 'none';
+                });
+        });
+
+        // 앱 선택과 요청 유형이 변경될 때마다 제목 업데이트
+        function updateTitle() {
+            const appSelect = document.getElementById('appName').value;
+            const requestType = document.getElementById('requestType').value;
+            const subjectInput = document.getElementById('subject');
+
+            if (appSelect && requestType) {
+                const currentTitle = subjectInput.value;
+                if (!currentTitle.startsWith(`[${appSelect}] ${requestType}:`)) {
+                    subjectInput.value = `[${appSelect}] ${requestType}: `;
+                }
+            }
+        }
+
+        document.getElementById('appName').addEventListener('change', updateTitle);
+        document.getElementById('requestType').addEventListener('change', updateTitle);
+    </script>
+</body>
+</html>
