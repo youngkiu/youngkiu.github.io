@@ -47,43 +47,78 @@
             </div>
 
             <div class="privacy-section">
-                <h2>2. 개인정보의 보유 및 이용 기간</h2>
+                <h2>2. Google 사용자 데이터 처리</h2>
+                <p>복용일지 앱은 Google Sign-In API와 Google Calendar API를 통해 다음과 같은 Google 사용자 데이터에 접근합니다:</p>
+                <h3>2.1 접근하는 Google 사용자 정보</h3>
+                <ul>
+                    <li>Google 계정 이메일 주소: 사용자 식별 및 계정 연동 목적</li>
+                    <li>Google 프로필 정보 (이름, 프로필 사진): 앱 내 사용자 표시 목적</li>
+                    <li>Google Calendar 데이터: 복용 기록을 캘린더에 저장하기 위한 접근 권한</li>
+                </ul>
+                <h3>2.2 Google 사용자 데이터 사용 목적</h3>
+                <ul>
+                    <li>사용자 인증 및 로그인 처리</li>
+                    <li>여러 기기 간 복용 기록 데이터 동기화</li>
+                    <li>복용 기록을 Google Calendar에 자동 저장</li>
+                    <li>앱 내 사용자 프로필 표시</li>
+                </ul>
+                <h3>2.3 Google Calendar API 접근 권한</h3>
+                <p>복용일지 앱은 다음 Google Calendar API 권한을 사용합니다:</p>
+                <ul>
+                    <li><strong>calendar.app.created</strong>: 보조 Google 캘린더 생성 및 이벤트 관리 권한</li>
+                    <li>이 권한은 복용 기록을 사용자의 Google Calendar에 저장하기 위해 필요합니다.</li>
+                    <li>복용 기록은 별도의 캘린더에 저장되어 기존 일정과 구분됩니다.</li>
+                    <li>사용자는 언제든지 앱 설정에서 캘린더 동기화 기능을 비활성화할 수 있습니다.</li>
+                </ul>
+                <h3>2.4 Google 사용자 데이터 저장 및 처리</h3>
+                <ul>
+                    <li>수집된 Google 사용자 데이터는 암호화되어 Firebase에 안전하게 저장됩니다.</li>
+                    <li>Google 사용자 데이터는 오직 위 명시된 목적으로만 사용됩니다.</li>
+                    <li>Google Calendar에 저장된 복용 기록은 사용자가 직접 관리할 수 있습니다.</li>
+                    <li>사용자가 앱을 삭제하거나 계정을 탈퇴하면 모든 Google 사용자 데이터는 즉시 삭제됩니다.</li>
+                </ul>
+                <h3>2.5 Google 사용자 데이터 정책 준수</h3>
+                <p>본 앱은 <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank">Google API 서비스 사용자 데이터 정책</a>을 준수합니다. Google 사용자 데이터는 명시된 목적 외에는 사용되지 않으며, 사용자의 명시적 동의 없이 제3자와 공유되지 않습니다.</p>
+            </div>
+
+            <div class="privacy-section">
+                <h2>3. 개인정보의 보유 및 이용 기간</h2>
                 <p>수집된 개인정보는 앱 사용 기간 동안 보관되며, 사용자가 앱을 삭제하거나 계정을 탈퇴하면 함께 삭제됩니다.</p>
             </div>
 
             <div class="privacy-section">
-                <h2>3. 개인정보의 제3자 제공</h2>
+                <h2>4. 개인정보의 제3자 제공</h2>
                 <p>복용일지 앱은 사용자의 개인정보를 제3자에게 제공하지 않습니다.</p>
             </div>
 
             <div class="privacy-section">
-                <h2>4. 로그인 정보 이용 안내</h2>
+                <h2>5. 로그인 정보 이용 안내</h2>
                 <p>복용일지 앱은 사용자의 데이터를 여러 기기에서 동기화하기 위해 Firebase 인증을 사용합니다. 로그인 정보는 Firebase의 개인정보처리방침에 따라 처리됩니다. 자세한 내용은 <a href="https://firebase.google.com/support/privacy" target="_blank">Firebase 개인정보처리방침</a>을 참조하세요.</p>
             </div>
 
             <div class="privacy-section">
-                <h2>5. 푸시 알림 서비스 이용 안내</h2>
+                <h2>6. 푸시 알림 서비스 이용 안내</h2>
                 <p>복용일지 앱은 사용자에게 약물 복용 시간 알림을 제공하기 위해 푸시 알림 서비스를 사용합니다. 사용자는 언제든지 기기의 설정에서 푸시 알림 수신 여부를 변경할 수 있습니다.</p>
             </div>
 
             <div class="privacy-section">
-                <h2>6. 광고 관련 정보</h2>
+                <h2>7. 광고 관련 정보</h2>
                 <p>본 앱은 Google AdMob을 사용하여 광고를 표시합니다. AdMob은 광고 표시를 위해 사용자의 광고 ID를 수집할 수 있습니다. 이는 Google의 개인정보처리방침에 따라 처리됩니다. 자세한 내용은 <a href="https://policies.google.com/privacy" target="_blank">Google 개인정보처리방침</a>을 참조하세요.</p>
             </div>
 
             <div class="privacy-section">
-                <h2>7. 사용자의 권리와 행사 방법</h2>
+                <h2>8. 사용자의 권리와 행사 방법</h2>
                 <p>사용자는 언제든지 앱을 삭제하거나 계정을 탈퇴하여 저장된 모든 데이터를 제거할 수 있습니다. 또한 기기의 설정에서 앱의 권한을 관리할 수 있습니다.</p>
             </div>
 
             <div class="privacy-section">
-                <h2>8. 개인정보 보호책임자</h2>
+                <h2>9. 개인정보 보호책임자</h2>
                 <p>개인정보 보호에 관한 문의사항이 있으시면 아래 연락처로 문의해 주세요.</p>
                 <p>이메일: youngkiu@gmail.com</p>
             </div>
 
             <div class="privacy-section">
-                <h2>9. 개인정보처리방침 변경</h2>
+                <h2>10. 개인정보처리방침 변경</h2>
                 <p>본 개인정보처리방침은 법률 또는 서비스의 변경사항을 반영하기 위해 수정될 수 있습니다. 개인정보처리방침이 변경되는 경우, 변경 사항을 앱 또는 웹사이트를 통해 공지할 것입니다.</p>
             </div>
         </div>

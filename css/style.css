@@ -209,6 +209,51 @@ nav ul li a:hover::after {
     opacity: 0.9;
 }
 
+.google-data-notice {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 30px 0;
+    backdrop-filter: blur(10px);
+}
+
+.google-data-notice h3 {
+    color: white;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.google-data-notice p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+.google-integration {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+.google-integration h4 {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.google-integration p {
+    color: var(--gray-color);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
 /* Apps Section */
 .apps {
     padding: 100px 0;
@@ -477,6 +522,32 @@ footer {
         font-size: 2.5rem;
     }
 
+    .google-data-notice {
+        margin: 20px 0;
+        padding: 15px;
+    }
+
+    .google-data-notice h3 {
+        font-size: 1.1rem;
+    }
+
+    .google-data-notice p {
+        font-size: 0.9rem;
+    }
+
+    .google-integration {
+        padding: 12px;
+        margin: 12px 0;
+    }
+
+    .google-integration h4 {
+        font-size: 1rem;
+    }
+
+    .google-integration p {
+        font-size: 0.9rem;
+    }
+
     .section-title {
         font-size: 2rem;
     }
@@ -498,6 +569,32 @@ footer {
 
     .hero-content p {
         font-size: 1rem;
+    }
+
+    .google-data-notice {
+        padding: 12px;
+        margin: 15px 0;
+    }
+
+    .google-data-notice h3 {
+        font-size: 1rem;
+    }
+
+    .google-data-notice p {
+        font-size: 0.85rem;
+    }
+
+    .google-integration {
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    .google-integration h4 {
+        font-size: 0.95rem;
+    }
+
+    .google-integration p {
+        font-size: 0.85rem;
     }
 
     .section-title {
