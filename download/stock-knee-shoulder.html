@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주식 무릎/어깨 알리미 - 앱 다운로드</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f7;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #1d1d1f;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #86868b;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .store-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .app-store {
+            background-color: #0071e3;
+            color: white;
+        }
+        .play-store {
+            background-color: #34a853;
+            color: white;
+        }
+        .store-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 20px;
+        }
+        .features {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .features h2 {
+            color: #1d1d1f;
+            margin-bottom: 15px;
+        }
+        .features ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .features li {
+            color: #86868b;
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .features li:before {
+            content: "•";
+            color: #0071e3;
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="../images/optimized/stock_knee_shoulder_icon_optimized.png" alt="주식 무릎/어깨 알리미 앱 아이콘">
+        </div>
+        <h1>주식 무릎/어깨 알리미</h1>
+        <p>주식 투자의 최적 타이밍을 놓치지 마세요.<br>자동으로 이동되지 않으면 아래 버튼을 사용하세요.</p>
+        <div class="buttons">
+            <a href="https://apps.apple.com/kr/app/주식-무릎-어깨-알리미/id6753945464" class="store-button app-store" id="apple-link">
+                App Store에서 다운로드
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.youngkiu.stock_knee_shoulder" class="store-button play-store" id="android-link">
+                Google Play에서 다운로드
+            </a>
+        </div>
+        <div class="features">
+            <h2>주요 기능</h2>
+            <ul>
+                <li>관심 종목의 무릎(저점)과 어깨(고점)를 실시간으로 모니터링합니다.</li>
+                <li>설정한 조건에 맞는 알림을 푸시로 받아 투자 타이밍을 놓치지 않습니다.</li>
+                <li>Google 또는 Apple 계정으로 간편하게 로그인할 수 있습니다.</li>
+                <li>알림 히스토리를 통해 과거 알림 내역을 확인할 수 있습니다.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // iOS 기기 감지
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+            // Android 기기 감지
+            const isAndroid = /Android/.test(navigator.userAgent);
+
+            // App Store 링크
+            const appStoreLink = "https://apps.apple.com/kr/app/주식-무릎-어깨-알리미/id6753945464";
+
+            // Google Play Store 링크
+            const playStoreLink = "https://play.google.com/store/apps/details?id=com.youngkiu.stock_knee_shoulder";
+
+            // 링크 업데이트
+            document.getElementById('apple-link').href = appStoreLink;
+            document.getElementById('android-link').href = playStoreLink;
+
+            // 자동 리다이렉션
+            if (isIOS) {
+                window.location.href = appStoreLink;
+            } else if (isAndroid) {
+                window.location.href = playStoreLink;
+            }
+        });
+    </script>
+</body>
+</html>
