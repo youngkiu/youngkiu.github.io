@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>다층 신경망 & 역전파 시각화</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0e12;--surface:#13151c;--surface2:#1a1d27;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --purple:#7c6ef5;--pdim:rgba(124,110,245,0.15);--pbrd:rgba(124,110,245,0.28);
+  --coral:#f07060;--cdim:rgba(240,112,96,0.15);--cbrd:rgba(240,112,96,0.28);
+  --teal:#3fcf8e;--tdim:rgba(63,207,142,0.13);
+  --amber:#f5a623;--adim:rgba(245,166,35,0.13);
+  --text:#e8eaf2;--muted:rgba(232,234,242,0.45);--dim:rgba(232,234,242,0.25);
+  --mono:'JetBrains Mono',monospace;--sans:'Noto Sans KR',sans-serif;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;padding:40px 16px 70px}
+
+header{width:100%;max-width:960px;margin-bottom:20px}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--purple);background:var(--pdim);border:1px solid var(--pbrd);
+  border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:12px}
+h1{font-size:clamp(20px,3.5vw,32px);font-weight:500;letter-spacing:-.02em;margin-bottom:8px}
+h1 em{font-style:normal;color:var(--purple)}
+.sub{font-size:13px;color:var(--muted);line-height:1.7;max-width:600px}
+.fml{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:14px}
+.fbox{font-family:var(--mono);font-size:12px;padding:5px 10px;border-radius:6px;
+  border:1px solid var(--border);background:var(--surface)}
+.fbox.hi{border-color:var(--pbrd);color:var(--purple)}
+.farr{background:transparent;border:none;color:var(--dim);font-size:15px}
+
+/* Phase strip */
+.phase-strip{display:flex;align-items:center;gap:4px;flex-wrap:wrap;
+  width:100%;max-width:960px;margin-bottom:16px}
+.ph{font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:6px 12px;
+  border-radius:7px;border:1px solid var(--border);background:var(--surface);
+  color:var(--dim);cursor:pointer;transition:all .2s;white-space:nowrap}
+.ph:hover{border-color:var(--border2);color:var(--muted)}
+.ph.active{border-color:var(--pbrd);background:var(--pdim);color:var(--purple)}
+.ph.done{border-color:rgba(63,207,142,.3);background:var(--tdim);color:var(--teal)}
+.ph.back-active{border-color:var(--cbrd);background:var(--cdim);color:var(--coral)}
+.ph-arr{color:var(--dim);font-size:12px;padding:0 2px}
+
+/* Main grid */
+.grid{display:grid;grid-template-columns:1fr 300px;gap:14px;
+  width:100%;max-width:960px}
+@media(max-width:720px){.grid{grid-template-columns:1fr}}
+
+/* Network card */
+.net-card{background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;position:relative}
+#netsvg{display:block;width:100%;height:auto}
+.net-lbl{position:absolute;top:10px;right:12px;font-family:var(--mono);
+  font-size:9px;color:var(--dim);letter-spacing:.08em}
+
+/* Right panel */
+.rpanel{display:flex;flex-direction:column;gap:10px}
+
+.mcard{background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:12px}
+.mtitle{font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:10px;
+  display:flex;justify-content:space-between;align-items:center}
+.msub{font-size:9px;color:var(--muted);letter-spacing:0}
+.mgrid{display:grid;gap:4px}
+.mc{font-family:var(--mono);font-size:11.5px;padding:5px 7px;border-radius:5px;
+  text-align:right;border:1px solid var(--border);transition:all .35s;
+  min-width:54px;letter-spacing:.02em}
+.mc.pos{color:var(--purple);background:var(--pdim);border-color:var(--pbrd)}
+.mc.neg{color:var(--coral);background:var(--cdim);border-color:var(--cbrd)}
+.mc.zero{color:var(--dim);background:transparent}
+.mc.grd{color:var(--amber);background:var(--adim);border-color:rgba(245,166,35,.28)}
+.mc.flash{animation:flash .5s ease}
+@keyframes flash{0%,100%{opacity:1}40%{opacity:.1;background:#fff2}}
+
+/* Sample selector */
+.scard{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 12px}
+.stitle{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.srow{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.sbtn{font-family:var(--mono);font-size:11px;padding:7px 8px;border-radius:7px;
+  border:1px solid var(--border);background:var(--surface2);color:var(--muted);
+  cursor:pointer;transition:all .15s;text-align:center}
+.sbtn:hover{border-color:var(--border2);color:var(--text)}
+.sbtn.sel{border-color:var(--pbrd);background:var(--pdim);color:var(--purple)}
+
+/* Computation strip */
+.comp-strip{width:100%;max-width:960px;background:var(--surface);
+  border:1px solid var(--border);border-radius:12px;padding:12px 16px;
+  margin-top:12px;overflow-x:auto}
+.comp-title{font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.comp-flow{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;
+  font-family:var(--mono);font-size:11.5px;white-space:nowrap}
+.cstep{padding:5px 9px;border-radius:6px;border:1px solid var(--border);
+  background:var(--surface2);transition:all .3s}
+.cstep.active-fwd{border-color:var(--pbrd);background:var(--pdim);color:var(--purple)}
+.cstep.active-bwd{border-color:var(--cbrd);background:var(--cdim);color:var(--coral)}
+.cstep.active-loss{border-color:rgba(245,166,35,.3);background:var(--adim);color:var(--amber)}
+.carr{color:var(--dim);font-size:14px}
+
+/* Stats row */
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
+  width:100%;max-width:960px;margin-top:10px}
+@media(max-width:600px){.stats-row{grid-template-columns:repeat(3,1fr)}}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:9px 12px}
+.stat .sl{font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:3px}
+.stat .sv{font-family:var(--mono);font-size:15px;font-weight:500;color:var(--text)}
+.stat.ac-p .sv{color:var(--purple)}
+.stat.ac-c .sv{color:var(--coral)}
+.stat.ac-t .sv{color:var(--teal)}
+.stat.ac-a .sv{color:var(--amber)}
+
+/* Control buttons */
+.ctrl-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:10px 12px}
+.btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
+button{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;
+  padding:8px 6px;border-radius:7px;border:1px solid var(--border2);
+  background:var(--surface2);color:var(--muted);cursor:pointer;transition:all .15s}
+button:hover{border-color:rgba(124,110,245,.4);color:var(--text)}
+button.primary{background:var(--pdim);border-color:var(--pbrd);color:var(--purple)}
+button.primary:hover{background:rgba(124,110,245,.25)}
+button.bwd{background:var(--cdim);border-color:var(--cbrd);color:var(--coral)}
+button.train-btn{width:100%;background:rgba(63,207,142,.1);
+  border-color:rgba(63,207,142,.3);color:var(--teal);padding:9px}
+button.train-btn:hover{background:rgba(63,207,142,.2)}
+button.stop{background:rgba(245,166,35,.1);border-color:rgba(245,166,35,.3);color:var(--amber)}
+
+/* Loss chart */
+.loss-section{width:100%;max-width:960px;margin-top:12px;
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:14px 16px;display:none}
+.loss-section.visible{display:block}
+.loss-title{font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:10px;
+  display:flex;justify-content:space-between;align-items:center}
+.loss-meta{display:flex;gap:16px;font-size:11px;color:var(--muted);letter-spacing:0}
+#lossCanvas{width:100%;height:140px;display:block;border-radius:6px}
+
+/* Info bar */
+.info-bar{width:100%;max-width:960px;margin-top:10px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:10px 14px;display:flex;gap:10px;align-items:flex-start}
+.idot{width:6px;height:6px;border-radius:50%;background:var(--purple);
+  margin-top:5px;flex-shrink:0;animation:blink 1.8s ease-in-out infinite}
+.idot.idle{background:var(--dim);animation:none}
+.idot.done{background:var(--teal);animation:none}
+.idot.bwd{background:var(--coral);animation:none}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+#infoTxt{font-family:var(--mono);font-size:11.5px;color:var(--muted);line-height:1.65}
+
+/* Legend */
+.legend{width:100%;max-width:960px;display:flex;flex-wrap:wrap;gap:16px;margin-top:10px}
+.li{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.ld{width:10px;height:10px;border-radius:50%}
+.ll{width:22px;height:2px;border-radius:1px}
+
+/* α slider */
+.lr-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+.lr-lbl{font-family:var(--mono);font-size:10px;color:var(--muted);width:60px}
+.lr-row input[type=range]{flex:1;-webkit-appearance:none;appearance:none;
+  height:3px;border-radius:2px;background:var(--border2);outline:none;cursor:pointer}
+.lr-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+  width:13px;height:13px;border-radius:50%;background:var(--amber);
+  border:2px solid var(--bg);cursor:pointer}
+.lr-val{font-family:var(--mono);font-size:11px;color:var(--amber);min-width:32px;text-align:right}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Deep Learning · Neural Network</div>
+  <h1>다층 신경망 &amp; <em>역전파</em></h1>
+  <p class="sub">입력 x가 행렬(가중치)을 통과하며 예측값 ŷ를 만들고, 정답 y와의 오차(Loss)를 역방향으로 미분해 각 가중치를 업데이트합니다.</p>
+  <div class="fml">
+    <div class="fbox">순전파: ŷ = σ(W₂·tanh(W₁·x + b₁) + b₂)</div>
+    <div class="fbox farr">→</div>
+    <div class="fbox">Loss = −y·log(ŷ) − (1−y)·log(1−ŷ)</div>
+    <div class="fbox farr">→</div>
+    <div class="fbox hi">W ← W − α · ∂L/∂W</div>
+  </div>
+</header>
+
+<div class="phase-strip">
+  <div class="ph active" id="ph0" onclick="goPhase(0)">0. 초기화</div>
+  <div class="ph-arr">→</div>
+  <div class="ph" id="ph1" onclick="goPhase(1)">1. 순전파</div>
+  <div class="ph-arr">→</div>
+  <div class="ph" id="ph2" onclick="goPhase(2)">2. 손실 계산</div>
+  <div class="ph-arr">→</div>
+  <div class="ph" id="ph3" onclick="goPhase(3)">3. 역전파</div>
+  <div class="ph-arr">→</div>
+  <div class="ph" id="ph4" onclick="goPhase(4)">4. 가중치 갱신</div>
+</div>
+
+<div class="grid">
+  <!-- Network SVG -->
+  <div class="net-card">
+    <svg id="netsvg" viewBox="0 0 540 320" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="net-lbl">NETWORK ARCHITECTURE  2→3→1</div>
+  </div>
+
+  <!-- Right panel -->
+  <div class="rpanel">
+    <!-- W1 matrix -->
+    <div class="mcard">
+      <div class="mtitle">W₁ 행렬 <span class="msub" id="w1mode">가중치 (3×2)</span></div>
+      <div class="mgrid" id="W1grid" style="grid-template-columns:repeat(2,1fr)"></div>
+    </div>
+
+    <!-- W2 matrix -->
+    <div class="mcard">
+      <div class="mtitle">W₂ 행렬 <span class="msub" id="w2mode">가중치 (1×3)</span></div>
+      <div class="mgrid" id="W2grid" style="grid-template-columns:repeat(3,1fr)"></div>
+    </div>
+
+    <!-- Sample selector -->
+    <div class="scard">
+      <div class="stitle">학습 샘플 — XOR 문제</div>
+      <div class="srow" id="sampleBtns"></div>
+    </div>
+
+    <!-- Controls -->
+    <div class="ctrl-card">
+      <div class="btn-grid">
+        <button class="primary" onclick="runPhase(1)">▶ 순전파</button>
+        <button onclick="runPhase(2)">⊗ 손실 계산</button>
+        <button class="bwd" onclick="runPhase(3)">◀ 역전파</button>
+        <button onclick="runPhase(4)">✦ 가중치 갱신</button>
+      </div>
+      <button class="train-btn" id="trainBtn" onclick="toggleTrain()">🔁 자동 학습 시작</button>
+      <div class="lr-row">
+        <span class="lr-lbl">α 학습률</span>
+        <input type="range" id="lrSlider" min="0.01" max="1.0" step="0.01" value="0.3"
+          oninput="lr=+this.value;document.getElementById('lrVal').textContent=lr.toFixed(2)">
+        <span class="lr-val" id="lrVal">0.30</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Computation strip -->
+<div class="comp-strip">
+  <div class="comp-title">계산 흐름 (현재 샘플)</div>
+  <div class="comp-flow" id="compFlow">
+    <div class="cstep" id="cs-x">x = [?, ?]</div>
+    <div class="carr">·</div>
+    <div class="cstep" id="cs-w1">W₁</div>
+    <div class="carr">+b₁→</div>
+    <div class="cstep" id="cs-z1">z₁ = [?,?,?]</div>
+    <div class="carr">tanh→</div>
+    <div class="cstep" id="cs-a1">a₁ = [?,?,?]</div>
+    <div class="carr">·</div>
+    <div class="cstep" id="cs-w2">W₂</div>
+    <div class="carr">+b₂→</div>
+    <div class="cstep" id="cs-z2">z₂ = ?</div>
+    <div class="carr">σ→</div>
+    <div class="cstep" id="cs-yhat">ŷ = ?</div>
+    <div class="carr">vs</div>
+    <div class="cstep" id="cs-y">y = ?</div>
+    <div class="carr">→</div>
+    <div class="cstep" id="cs-loss">L = ?</div>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat ac-p"><div class="sl">입력 x</div><div class="sv" id="sv-x">—</div></div>
+  <div class="stat ac-p"><div class="sl">출력 ŷ</div><div class="sv" id="sv-yhat">—</div></div>
+  <div class="stat ac-t"><div class="sl">정답 y</div><div class="sv" id="sv-y">—</div></div>
+  <div class="stat ac-a"><div class="sl">손실 L</div><div class="sv" id="sv-loss">—</div></div>
+  <div class="stat ac-c"><div class="sl">에포크</div><div class="sv" id="sv-epoch">0</div></div>
+</div>
+
+<!-- Loss chart -->
+<div class="loss-section" id="lossSection">
+  <div class="loss-title">
+    <span>학습 손실 곡선</span>
+    <span class="loss-meta">
+      <span id="lm-epoch">epoch 0</span>
+      <span>avg loss: <span id="lm-loss">—</span></span>
+      <span style="color:var(--teal)" id="lm-acc">acc: —</span>
+    </span>
+  </div>
+  <canvas id="lossCanvas"></canvas>
+</div>
+
+<div class="info-bar">
+  <div class="idot idle" id="idot"></div>
+  <div id="infoTxt">샘플을 선택하고 ▶ 순전파 버튼을 눌러 단계별로 진행하세요. 또는 🔁 자동 학습으로 전체 학습 과정을 확인하세요.</div>
+</div>
+
+<div class="legend">
+  <div class="li"><div class="ld" style="background:var(--purple)"></div>양수 가중치</div>
+  <div class="li"><div class="ld" style="background:var(--coral)"></div>음수 가중치</div>
+  <div class="li"><div class="ll" style="background:rgba(124,110,245,.5)"></div>순전파 신호</div>
+  <div class="li"><div class="ll" style="background:rgba(240,112,96,.5)"></div>역전파 그래디언트</div>
+  <div class="li"><div class="ld" style="background:var(--teal)"></div>출력 / 정답</div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// Neural Network: 2 → 3 → 1  (XOR)
+// ─────────────────────────────────────────────
+const SAMPLES=[
+  {x:[0,0],y:0,lbl:'[0,0] → 0'},
+  {x:[0,1],y:1,lbl:'[0,1] → 1'},
+  {x:[1,0],y:1,lbl:'[1,0] → 1'},
+  {x:[1,1],y:0,lbl:'[1,1] → 0'},
+];
+
+let lr=0.3, epoch=0, curSample=0, training=false, trainRaf=null;
+let lossHistory=[], stepPhase=0;
+
+// Weight state
+let W1,b1,W2,b2;
+// Cache
+let cache={x:[0,0],z1:[0,0,0],a1:[0,0,0],z2:0,yhat:0};
+let grads={dW1:[[0,0],[0,0],[0,0]],db1:[0,0,0],dW2:[[0,0,0]],db2:[0]};
+
+function rn(){return (Math.random()-.5)*2}
+function initNN(){
+  W1=[[rn(),rn()],[rn(),rn()],[rn(),rn()]];
+  b1=[0,0,0];
+  W2=[[rn(),rn(),rn()]];
+  b2=[0];
+  lossHistory=[];epoch=0;stepPhase=0;
+  document.getElementById('sv-epoch').textContent='0';
+  document.getElementById('lossSection').classList.remove('visible');
+}
+
+const sig=x=>1/(1+Math.exp(-x));
+const dsig=x=>{const s=sig(x);return s*(1-s);}
+const tanh=x=>Math.tanh(x);
+const dtanh=z=>1-Math.tanh(z)**2;
+const bce=(y,yh)=>-(y*Math.log(yh+1e-9)+(1-y)*Math.log(1-yh+1e-9));
+
+function forward(x){
+  const z1=W1.map((row,i)=>row.reduce((s,w,j)=>s+w*x[j],b1[i]));
+  const a1=z1.map(tanh);
+  const z2=W2[0].reduce((s,w,i)=>s+w*a1[i],b2[0]);
+  const yhat=sig(z2);
+  cache={x,z1,a1,z2,yhat};
+  return {z1,a1,z2,yhat};
+}
+
+function backward(x,y){
+  const {z1,a1,z2,yhat}=cache;
+  const dz2=yhat-y;
+  const dW2=[a1.map(ai=>dz2*ai)];
+  const db2=[dz2];
+  const da1=W2[0].map(w=>w*dz2);
+  const dz1=da1.map((d,i)=>d*dtanh(z1[i]));
+  const dW1=dz1.map(dz=>x.map(xi=>dz*xi));
+  const db1=[...dz1];
+  grads={dW1,db1,dW2,db2};
+  return grads;
+}
+
+function updateWeights(){
+  W1=W1.map((row,i)=>row.map((w,j)=>w-lr*grads.dW1[i][j]));
+  b1=b1.map((b,i)=>b-lr*grads.db1[i]);
+  W2=[W2[0].map((w,j)=>w-lr*grads.dW2[0][j])];
+  b2=[b2[0]-lr*grads.db2[0]];
+}
+
+function accuracy(){
+  return SAMPLES.filter(s=>{
+    const{yhat}=forward(s.x);
+    return Math.round(yhat)===s.y;
+  }).length/SAMPLES.length;
+}
+
+// ─────────────────────────────────────────────
+// SVG Network Drawing
+// ─────────────────────────────────────────────
+const NP={
+  in:[[70,90],[70,230]],
+  h:[[270,65],[270,160],[270,255]],
+  out:[[470,160]]
+};
+const NR=27;
+
+function wColor(w){
+  const v=Math.min(Math.abs(w),2)/2;
+  if(w>0) return `rgba(124,110,245,${0.2+v*0.7})`;
+  return `rgba(240,112,96,${0.2+v*0.7})`;
+}
+function wStroke(w){
+  const v=Math.min(Math.abs(w),2)/2;
+  return 1+v*3;
+}
+
+function drawSVG(animPhase=0, animProgress=0){
+  const svg=document.getElementById('netsvg');
+  const {z1,a1,yhat}=cache;
+  const lines=[];
+
+  // Input → Hidden connections
+  for(let i=0;i<3;i++){
+    for(let j=0;j<2;j++){
+      const [x1,y1]=NP.in[j], [x2,y2]=NP.h[i];
+      const w=W1[i][j];
+      const isActive=(animPhase===1||animPhase===-1);
+      const isBwd=(animPhase===-1);
+      lines.push({x1,y1,x2,y2,w,layer:1,i,j,isActive,isBwd});
+    }
+  }
+  // Hidden → Output
+  for(let i=0;i<3;i++){
+    const [x1,y1]=NP.h[i],[x2,y2]=NP.out[0];
+    const w=W2[0][i];
+    const isActive=(animPhase===2||animPhase===-2);
+    const isBwd=(animPhase===-2);
+    lines.push({x1,y1,x2,y2,w,layer:2,i,isActive,isBwd});
+  }
+
+  let html='';
+  // Connections
+  for(const l of lines){
+    const c=wColor(l.w), sw=wStroke(l.w);
+    const opacity=l.isActive?1:0.45;
+    const extra=l.isActive&&!l.isBwd?`<animate attributeName="stroke-dashoffset" from="0" to="-20" dur="0.4s" repeatCount="indefinite"/>`:
+      l.isActive&&l.isBwd?`<animate attributeName="stroke-dashoffset" from="-20" to="0" dur="0.4s" repeatCount="indefinite"/>`:'';
+    const dashArr=l.isActive?'6 4':'0';
+    html+=`<line x1="${l.x1}" y1="${l.y1}" x2="${l.x2}" y2="${l.y2}"
+      stroke="${l.isBwd?'rgba(240,112,96,0.85)':c}"
+      stroke-width="${l.isActive?sw+1:sw}" opacity="${opacity}"
+      stroke-dasharray="${dashArr}">${extra}</line>`;
+  }
+
+  // Layer labels
+  html+=`<text x="70" y="30" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(232,234,242,0.25)" text-anchor="middle">입력층</text>`;
+  html+=`<text x="270" y="30" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(232,234,242,0.25)" text-anchor="middle">은닉층</text>`;
+  html+=`<text x="470" y="30" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(232,234,242,0.25)" text-anchor="middle">출력층</text>`;
+
+  // Matrix dim labels
+  html+=`<text x="170" y="152" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(124,110,245,0.6)" text-anchor="middle">W₁(3×2)</text>`;
+  html+=`<text x="370" y="152" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(124,110,245,0.6)" text-anchor="middle">W₂(1×3)</text>`;
+
+  // Input nodes
+  for(let j=0;j<2;j++){
+    const [cx,cy]=NP.in[j];
+    const active=animPhase===1||animPhase===-1;
+    const fc=active?'rgba(124,110,245,0.25)':'rgba(19,21,28,1)';
+    const sc=active?'rgba(124,110,245,0.8)':'rgba(255,255,255,0.2)';
+    html+=`<circle cx="${cx}" cy="${cy}" r="${NR}" fill="${fc}" stroke="${sc}" stroke-width="1.5"/>`;
+    html+=`<text x="${cx}" y="${cy-5}" font-family="JetBrains Mono,monospace" font-size="11" fill="${active?'#7c6ef5':'rgba(232,234,242,0.7)'}" text-anchor="middle">x${j+1}</text>`;
+    const xv=cache.x[j];
+    html+=`<text x="${cx}" y="${cy+12}" font-family="JetBrains Mono,monospace" font-size="10" fill="${active?'rgba(124,110,245,0.9)':'rgba(232,234,242,0.4)'}" text-anchor="middle">${xv.toFixed(1)}</text>`;
+  }
+
+  // Hidden nodes
+  for(let i=0;i<3;i++){
+    const [cx,cy]=NP.h[i];
+    const fwdActive=animPhase===2;
+    const bwdActive=animPhase===-1||animPhase===-2;
+    const fc=fwdActive?'rgba(124,110,245,0.25)':bwdActive?'rgba(240,112,96,0.15)':'rgba(19,21,28,1)';
+    const sc=fwdActive?'rgba(124,110,245,0.8)':bwdActive?'rgba(240,112,96,0.7)':'rgba(255,255,255,0.2)';
+    html+=`<circle cx="${cx}" cy="${cy}" r="${NR}" fill="${fc}" stroke="${sc}" stroke-width="1.5"/>`;
+    html+=`<text x="${cx}" y="${cy-6}" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(232,234,242,0.5)" text-anchor="middle">h${i+1}</text>`;
+    const av=a1[i];
+    const col=Math.abs(av)>0.5?(av>0?'rgba(124,110,245,0.9)':'rgba(240,112,96,0.9)'):'rgba(232,234,242,0.4)';
+    html+=`<text x="${cx}" y="${cy+11}" font-family="JetBrains Mono,monospace" font-size="10" fill="${col}" text-anchor="middle">${av.toFixed(2)}</text>`;
+  }
+
+  // Output node
+  {
+    const [cx,cy]=NP.out[0];
+    const done=animPhase>=3||animPhase===-2;
+    const fc=done?'rgba(63,207,142,0.2)':'rgba(19,21,28,1)';
+    const sc=done?'rgba(63,207,142,0.8)':'rgba(255,255,255,0.2)';
+    html+=`<circle cx="${cx}" cy="${cy}" r="${NR}" fill="${fc}" stroke="${sc}" stroke-width="1.5"/>`;
+    html+=`<text x="${cx}" y="${cy-6}" font-family="JetBrains Mono,monospace" font-size="11" fill="${done?'#3fcf8e':'rgba(232,234,242,0.6)'}" text-anchor="middle">ŷ</text>`;
+    html+=`<text x="${cx}" y="${cy+11}" font-family="JetBrains Mono,monospace" font-size="11" fill="${done?'#3fcf8e':'rgba(232,234,242,0.35)'}" text-anchor="middle">${yhat.toFixed(3)}</text>`;
+  }
+
+  // Target y annotation
+  {
+    const [cx,cy]=NP.out[0];
+    const s=SAMPLES[curSample];
+    html+=`<text x="${cx+50}" y="${cy-8}" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(63,207,142,0.7)">y=${s.y}</text>`;
+    const diff=Math.abs(yhat-s.y);
+    const dc=diff<0.1?'rgba(63,207,142,0.7)':diff<0.4?'rgba(245,166,35,0.8)':'rgba(240,112,96,0.8)';
+    html+=`<text x="${cx+50}" y="${cy+8}" font-family="JetBrains Mono,monospace" font-size="10" fill="${dc}">Δ=${diff.toFixed(3)}</text>`;
+  }
+
+  // Backprop gradient annotations
+  if(animPhase===-1||animPhase===-2){
+    const g=grads;
+    for(let i=0;i<3;i++){
+      for(let j=0;j<2;j++){
+        const [x1,y1]=NP.in[j],[x2,y2]=NP.h[i];
+        const gv=g.dW1[i][j];
+        const mx=(x1+x2)/2,my=(y1+y2)/2-8;
+        html+=`<text x="${mx}" y="${my}" font-family="JetBrains Mono,monospace" font-size="8.5" fill="rgba(240,112,96,0.75)" text-anchor="middle">${gv.toFixed(3)}</text>`;
+      }
+    }
+    for(let i=0;i<3;i++){
+      const [x1,y1]=NP.h[i],[x2,y2]=NP.out[0];
+      const gv=g.dW2[0][i];
+      const mx=(x1+x2)/2,my=(y1+y2)/2-8;
+      html+=`<text x="${mx}" y="${my}" font-family="JetBrains Mono,monospace" font-size="8.5" fill="rgba(240,112,96,0.75)" text-anchor="middle">${gv.toFixed(3)}</text>`;
+    }
+  }
+
+  svg.innerHTML=html;
+}
+
+// ─────────────────────────────────────────────
+// Matrix cell rendering
+// ─────────────────────────────────────────────
+function cellClass(v){
+  if(Math.abs(v)<0.03) return 'mc zero';
+  return v>0?'mc pos':'mc neg';
+}
+function grdClass(){return 'mc grd';}
+
+function renderW1(showGrad=false){
+  const g=document.getElementById('W1grid');
+  g.style.gridTemplateColumns='repeat(2,1fr)';
+  if(!showGrad){
+    document.getElementById('w1mode').textContent='가중치 (3×2)';
+    g.innerHTML=W1.flatMap((row,i)=>row.map((w,j)=>
+      `<div class="${cellClass(w)}" id="w1c${i}${j}">${w.toFixed(3)}</div>`
+    )).join('');
+  } else {
+    document.getElementById('w1mode').textContent='그래디언트 ∂L/∂W₁ (3×2)';
+    g.innerHTML=grads.dW1.flatMap((row,i)=>row.map((v,j)=>
+      `<div class="${grdClass()}" id="w1c${i}${j}">${v.toFixed(3)}</div>`
+    )).join('');
+  }
+}
+
+function renderW2(showGrad=false){
+  const g=document.getElementById('W2grid');
+  g.style.gridTemplateColumns='repeat(3,1fr)';
+  if(!showGrad){
+    document.getElementById('w2mode').textContent='가중치 (1×3)';
+    g.innerHTML=W2[0].map((w,j)=>
+      `<div class="${cellClass(w)}" id="w2c${j}">${w.toFixed(3)}</div>`
+    ).join('');
+  } else {
+    document.getElementById('w2mode').textContent='그래디언트 ∂L/∂W₂ (1×3)';
+    g.innerHTML=grads.dW2[0].map((v,j)=>
+      `<div class="${grdClass()}" id="w2c${j}">${v.toFixed(3)}</div>`
+    ).join('');
+  }
+}
+
+function flashCells(){
+  document.querySelectorAll('.mc').forEach(c=>{
+    c.classList.remove('flash');
+    void c.offsetWidth;
+    c.classList.add('flash');
+  });
+}
+
+// ─────────────────────────────────────────────
+// Computation strip
+// ─────────────────────────────────────────────
+function updateCompStrip(phase){
+  const s=SAMPLES[curSample];
+  const {z1,a1,z2,yhat}=cache;
+  const L=bce(s.y,yhat);
+
+  document.getElementById('cs-x').textContent=`x=[${s.x.join(',')}]`;
+  document.getElementById('cs-w1').textContent='W₁';
+  document.getElementById('cs-z1').textContent=`z₁=[${z1.map(v=>v.toFixed(2)).join(',')}]`;
+  document.getElementById('cs-a1').textContent=`a₁=[${a1.map(v=>v.toFixed(2)).join(',')}]`;
+  document.getElementById('cs-w2').textContent='W₂';
+  document.getElementById('cs-z2').textContent=`z₂=${z2.toFixed(3)}`;
+  document.getElementById('cs-yhat').textContent=`ŷ=${yhat.toFixed(3)}`;
+  document.getElementById('cs-y').textContent=`y=${s.y}`;
+  document.getElementById('cs-loss').textContent=`L=${L.toFixed(4)}`;
+
+  const ids=['cs-x','cs-w1','cs-z1','cs-a1','cs-w2','cs-z2','cs-yhat','cs-y','cs-loss'];
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    el.classList.remove('active-fwd','active-bwd','active-loss');
+  });
+
+  if(phase===1){
+    ['cs-x','cs-w1','cs-z1','cs-a1'].forEach(id=>document.getElementById(id).classList.add('active-fwd'));
+  } else if(phase===2){
+    ['cs-w2','cs-z2','cs-yhat'].forEach(id=>document.getElementById(id).classList.add('active-fwd'));
+    ['cs-y','cs-loss'].forEach(id=>document.getElementById(id).classList.add('active-loss'));
+  } else if(phase===3||phase===4){
+    ['cs-loss','cs-w1','cs-w2'].forEach(id=>document.getElementById(id).classList.add('active-bwd'));
+  }
+}
+
+// ─────────────────────────────────────────────
+// Stats
+// ─────────────────────────────────────────────
+function updateStats(){
+  const s=SAMPLES[curSample];
+  const {yhat}=cache;
+  const L=bce(s.y,yhat);
+  document.getElementById('sv-x').textContent=`[${s.x.join(',')}]`;
+  document.getElementById('sv-yhat').textContent=yhat.toFixed(4);
+  document.getElementById('sv-y').textContent=s.y;
+  document.getElementById('sv-loss').textContent=L.toFixed(4);
+  document.getElementById('sv-epoch').textContent=epoch;
+}
+
+// ─────────────────────────────────────────────
+// Phase control
+// ─────────────────────────────────────────────
+const phaseNames=['초기화','순전파','손실 계산','역전파','가중치 갱신'];
+const phaseDots=[
+  ['idle','idle','idle','idle','idle'],
+  ['done','fwd','idle','idle','idle'],
+  ['done','done','idle','idle','idle'],
+  ['done','done','done','bwd','idle'],
+  ['done','done','done','done','done'],
+];
+
+function setPhaseUI(p){
+  for(let i=0;i<=4;i++){
+    const el=document.getElementById('ph'+i);
+    el.classList.remove('active','done','back-active');
+    if(i===p) el.classList.add('active');
+    else if(i<p) el.classList.add('done');
+  }
+}
+
+function setInfo(state,msg){
+  const d=document.getElementById('idot');
+  d.className='idot '+state;
+  document.getElementById('infoTxt').textContent=msg;
+}
+
+function goPhase(p){
+  if(training) return;
+  runPhase(p);
+}
+
+function runPhase(p){
+  if(training) return;
+  stepPhase=p;
+  const s=SAMPLES[curSample];
+  setPhaseUI(p);
+
+  if(p===0){
+    initNN();
+    forward(s.x);
+    drawSVG(0);
+    renderW1(); renderW2();
+    updateCompStrip(0);
+    updateStats();
+    setInfo('idle','초기화됨. ▶ 순전파 버튼을 눌러 시작하세요.');
+  }
+  else if(p===1){
+    forward(s.x);
+    drawSVG(1);
+    renderW1(false); renderW2(false);
+    updateCompStrip(1);
+    updateStats();
+    setInfo('run',`순전파: x=[${s.x}] 입력이 W₁을 거쳐 은닉층으로 전파됩니다. z₁=W₁·x+b₁ → a₁=tanh(z₁)`);
+    setTimeout(()=>{
+      drawSVG(2);
+      updateCompStrip(2);
+      setInfo('run','순전파 완료: a₁이 W₂를 거쳐 출력 ŷ=σ(W₂·a₁+b₂)를 생성합니다.');
+    },900);
+  }
+  else if(p===2){
+    if(stepPhase<1) forward(s.x);
+    drawSVG(2);
+    renderW1(false); renderW2(false);
+    updateCompStrip(2);
+    updateStats();
+    const L=bce(s.y,cache.yhat);
+    setInfo('run',`손실 계산: ŷ=${cache.yhat.toFixed(4)}, y=${s.y} → L=${L.toFixed(5)}. 정답과 예측의 차이입니다.`);
+  }
+  else if(p===3){
+    if(stepPhase<2) forward(s.x);
+    backward(s.x, s.y);
+    drawSVG(-1);
+    renderW1(true); renderW2(true);
+    updateCompStrip(3);
+    updateStats();
+    setInfo('bwd','역전파: ∂L/∂W₁, ∂L/∂W₂ 그래디언트가 우→좌로 역방향 전파됩니다. 행렬에 그래디언트 값이 표시됩니다.');
+    setTimeout(()=>{ drawSVG(-2); },500);
+  }
+  else if(p===4){
+    if(stepPhase<3){ forward(s.x); backward(s.x,s.y); }
+    const oldW1=JSON.parse(JSON.stringify(W1));
+    const oldW2=JSON.parse(JSON.stringify(W2));
+    updateWeights();
+    epoch++;
+    drawSVG(0);
+    renderW1(false); renderW2(false);
+    flashCells();
+    updateCompStrip(4);
+    updateStats();
+    const acc=accuracy();
+    setInfo('done',`가중치 갱신 완료! W←W−α·∂L/∂W (α=${lr.toFixed(2)}). 에포크 ${epoch}, 정확도 ${(acc*100).toFixed(0)}%`);
+    stepPhase=0;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Auto Training
+// ─────────────────────────────────────────────
+let epochLoss=0, epochCount=0, batchIdx=0;
+
+function trainStep(){
+  if(!training) return;
+  const s=SAMPLES[batchIdx%4];
+  batchIdx++;
+  forward(s.x);
+  backward(s.x,s.y);
+  updateWeights();
+  epochLoss+=bce(s.y,cache.yhat);
+  epochCount++;
+  if(batchIdx%4===0){
+    epoch++;
+    const avgL=epochLoss/epochCount;
+    lossHistory.push(avgL);
+    epochLoss=0; epochCount=0;
+    document.getElementById('sv-epoch').textContent=epoch;
+    document.getElementById('lm-epoch').textContent=`epoch ${epoch}`;
+    document.getElementById('lm-loss').textContent=avgL.toFixed(5);
+    document.getElementById('lm-acc').textContent=`acc: ${(accuracy()*100).toFixed(0)}%`;
+    drawLossChart();
+    if(epoch%50===0){
+      const s2=SAMPLES[curSample];
+      forward(s2.x);
+      drawSVG(0);
+      renderW1(); renderW2();
+      updateStats();
+      setInfo('run',`학습 중... epoch ${epoch}, avg loss=${avgL.toFixed(5)}, acc=${(accuracy()*100).toFixed(0)}%`);
+    }
+    if(accuracy()===1 && avgL<0.02){
+      training=false;
+      document.getElementById('trainBtn').className='train-btn';
+      document.getElementById('trainBtn').textContent='🔁 자동 학습 시작';
+      const s2=SAMPLES[curSample];
+      forward(s2.x);
+      drawSVG(4);
+      renderW1(); renderW2();
+      updateStats();
+      setInfo('done',`학습 수렴! XOR 문제 해결 완료. epoch=${epoch}, acc=100%, loss=${avgL.toFixed(5)}`);
+      return;
+    }
+  }
+  trainRaf=setTimeout(()=>requestAnimationFrame(trainStep), 2);
+}
+
+function toggleTrain(){
+  if(training){
+    training=false;
+    if(trainRaf) clearTimeout(trainRaf);
+    document.getElementById('trainBtn').className='train-btn';
+    document.getElementById('trainBtn').textContent='🔁 자동 학습 시작';
+    const s=SAMPLES[curSample];
+    forward(s.x);
+    drawSVG(0); renderW1(); renderW2(); updateStats();
+    setInfo('idle','학습 정지됨.');
+  } else {
+    training=true;
+    document.getElementById('trainBtn').className='train-btn stop';
+    document.getElementById('trainBtn').textContent='⏹ 학습 정지';
+    document.getElementById('lossSection').classList.add('visible');
+    setInfo('run','자동 학습 시작! 4개의 XOR 샘플로 가중치를 반복 업데이트합니다...');
+    requestAnimationFrame(trainStep);
+  }
+}
+
+// ─────────────────────────────────────────────
+// Loss Chart
+// ─────────────────────────────────────────────
+function drawLossChart(){
+  const cv=document.getElementById('lossCanvas');
+  const dpr=window.devicePixelRatio||1;
+  const rect=cv.getBoundingClientRect();
+  cv.width=rect.width*dpr; cv.height=rect.height*dpr;
+  const ctx=cv.getContext('2d');
+  ctx.scale(dpr,dpr);
+  const W=rect.width, H=rect.height;
+  const PAD={t:10,r:12,b:24,l:44};
+  ctx.clearRect(0,0,W,H);
+
+  const data=lossHistory;
+  if(data.length<2) return;
+
+  const maxL=Math.max(...data)*1.05;
+  const minL=0;
+
+  const toX=i=>PAD.l+(i/(data.length-1))*(W-PAD.l-PAD.r);
+  const toY=v=>H-PAD.b-(v-minL)/(maxL-minL)*(H-PAD.t-PAD.b);
+
+  // Grid
+  ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+  for(let g=0;g<=4;g++){
+    const y=PAD.t+g*(H-PAD.t-PAD.b)/4;
+    ctx.beginPath(); ctx.moveTo(PAD.l,y); ctx.lineTo(W-PAD.r,y); ctx.stroke();
+    const v=maxL-(g/4)*maxL;
+    ctx.fillStyle='rgba(232,234,242,0.25)';
+    ctx.font='9px JetBrains Mono,monospace';
+    ctx.textAlign='right';
+    ctx.fillText(v.toFixed(3),PAD.l-4,y+3);
+  }
+
+  // Gradient fill
+  const grad=ctx.createLinearGradient(0,PAD.t,0,H-PAD.b);
+  grad.addColorStop(0,'rgba(124,110,245,0.35)');
+  grad.addColorStop(1,'rgba(124,110,245,0.02)');
+  ctx.beginPath();
+  ctx.moveTo(toX(0),H-PAD.b);
+  data.forEach((v,i)=>ctx.lineTo(toX(i),toY(v)));
+  ctx.lineTo(toX(data.length-1),H-PAD.b);
+  ctx.closePath();
+  ctx.fillStyle=grad; ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  data.forEach((v,i)=>i===0?ctx.moveTo(toX(i),toY(v)):ctx.lineTo(toX(i),toY(v)));
+  ctx.strokeStyle='#7c6ef5'; ctx.lineWidth=2; ctx.stroke();
+
+  // X labels
+  ctx.fillStyle='rgba(232,234,242,0.25)';
+  ctx.font='9px JetBrains Mono,monospace'; ctx.textAlign='center';
+  const step=Math.max(1,Math.floor(data.length/6));
+  for(let i=0;i<data.length;i+=step){
+    ctx.fillText(i,toX(i),H-PAD.b+14);
+  }
+}
+
+// ─────────────────────────────────────────────
+// Sample buttons
+// ─────────────────────────────────────────────
+function buildSampleBtns(){
+  const c=document.getElementById('sampleBtns');
+  c.innerHTML=SAMPLES.map((s,i)=>
+    `<div class="sbtn${i===curSample?' sel':''}" onclick="selectSample(${i})">${s.lbl}</div>`
+  ).join('');
+}
+
+function selectSample(i){
+  curSample=i;
+  buildSampleBtns();
+  if(!training){
+    const s=SAMPLES[i];
+    forward(s.x);
+    drawSVG(0);
+    renderW1(); renderW2();
+    updateCompStrip(0);
+    updateStats();
+    setInfo('idle',`샘플 변경: ${s.lbl}. 순전파 버튼으로 계산을 확인하세요.`);
+  }
+}
+
+// ─────────────────────────────────────────────
+// Init
+// ─────────────────────────────────────────────
+initNN();
+buildSampleBtns();
+const s0=SAMPLES[0];
+forward(s0.x);
+drawSVG(0);
+renderW1(); renderW2();
+updateCompStrip(0);
+updateStats();
+setInfo('idle','초기 가중치는 랜덤값입니다. 샘플을 선택하고 단계별로 순전파 → 역전파 → 갱신 순으로 진행하거나, 자동 학습으로 XOR 수렴 과정을 보세요.');
+
+window.addEventListener('resize',()=>{
+  drawSVG(0);
+  if(lossHistory.length>1) drawLossChart();
+});
+</script>
+</body>
+</html>
