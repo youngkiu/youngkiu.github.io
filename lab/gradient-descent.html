@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>경사하강법 시각화 — Gradient Descent</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0d0e12;
+  --surface: #13151c;
+  --surface2: #1a1d27;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --purple: #7c6ef5;
+  --purple-dim: rgba(124,110,245,0.15);
+  --coral: #f07060;
+  --coral-dim: rgba(240,112,96,0.15);
+  --teal: #3fcf8e;
+  --teal-dim: rgba(63,207,142,0.12);
+  --amber: #f5a623;
+  --amber-dim: rgba(245,166,35,0.12);
+  --text: #e8eaf2;
+  --text-muted: rgba(232,234,242,0.45);
+  --text-dim: rgba(232,234,242,0.25);
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Noto Sans KR', sans-serif;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px 60px;
+}
+
+header {
+  width: 100%;
+  max-width: 860px;
+  margin-bottom: 32px;
+}
+
+.badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--purple);
+  background: var(--purple-dim);
+  border: 1px solid rgba(124,110,245,0.25);
+  border-radius: 4px;
+  padding: 3px 8px;
+  display: inline-block;
+  margin-bottom: 14px;
+}
+
+h1 {
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+h1 em { font-style: normal; color: var(--purple); }
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 560px;
+}
+
+.equation-strip {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.eq-box {
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.eq-box.hi { border-color: rgba(124,110,245,0.3); color: var(--purple); }
+.eq-box.arrow { background: transparent; border: none; color: var(--text-dim); font-size: 16px; }
+
+.main-grid {
+  width: 100%;
+  max-width: 860px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 16px;
+}
+@media (max-width: 700px) {
+  .main-grid { grid-template-columns: 1fr; }
+}
+
+.canvas-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 340px;
+}
+
+.canvas-label {
+  position: absolute;
+  top: 12px; right: 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.stat-card .lbl {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+.stat-card .num {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+}
+.stat-card.accent-purple .num { color: var(--purple); }
+.stat-card.accent-coral .num { color: var(--coral); }
+.stat-card.accent-teal .num { color: var(--teal); }
+.stat-card.accent-amber .num { color: var(--amber); }
+
+.controls-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.controls-title {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+
+.ctrl-row {
+  margin-bottom: 14px;
+}
+.ctrl-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 5px;
+}
+.ctrl-name {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.ctrl-val {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border2);
+  outline: none;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--purple);
+  border: 2px solid var(--bg);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+input[type=range]::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--purple);
+  border: 2px solid var(--bg);
+  cursor: pointer;
+}
+input[type=range].lr-range::-webkit-slider-thumb { background: var(--amber); }
+input[type=range].lr-range::-moz-range-thumb { background: var(--amber); }
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+button {
+  flex: 1;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  padding: 9px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+button:hover { border-color: rgba(124,110,245,0.4); color: var(--text); }
+button.primary {
+  background: var(--purple-dim);
+  border-color: rgba(124,110,245,0.4);
+  color: var(--purple);
+}
+button.primary:hover { background: rgba(124,110,245,0.25); }
+button.running {
+  background: var(--coral-dim);
+  border-color: rgba(240,112,96,0.4);
+  color: var(--coral);
+}
+
+.info-bar {
+  width: 100%;
+  max-width: 860px;
+  margin-top: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.info-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--purple);
+  margin-top: 6px;
+  flex-shrink: 0;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.info-dot.idle { background: var(--text-dim); animation: none; }
+.info-dot.done { background: var(--teal); animation: none; }
+.info-dot.diverge { background: var(--coral); animation: none; }
+
+#infoText {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-family: var(--mono);
+}
+
+.legend {
+  width: 100%;
+  max-width: 860px;
+  margin-top: 12px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-line {
+  width: 24px; height: 2px;
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Machine Learning Basics</div>
+  <h1>경사하강법 — <em>Gradient Descent</em></h1>
+  <p class="subtitle">2차 방정식을 미분하면 1차 방정식이 됩니다. 임의 지점에서 시작해 미분값(기울기)의 반대 방향으로 조금씩 이동하면 전역 최솟값에 도달합니다.</p>
+  <div class="equation-strip">
+    <div class="eq-box">f(x) = ax² + bx + c</div>
+    <div class="eq-box arrow">→</div>
+    <div class="eq-box">f′(x) = 2ax + b</div>
+    <div class="eq-box arrow">→</div>
+    <div class="eq-box hi">x ← x − α·f′(x)</div>
+  </div>
+</header>
+
+<div class="main-grid">
+  <div class="canvas-card">
+    <canvas id="c"></canvas>
+    <div class="canvas-label">LIVE VISUALIZATION</div>
+  </div>
+
+  <div class="side-panel">
+    <div class="stats-grid">
+      <div class="stat-card accent-coral">
+        <div class="lbl">현재 x</div>
+        <div class="num" id="sx">3.500</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="lbl">f(x)</div>
+        <div class="num" id="sy">—</div>
+      </div>
+      <div class="stat-card accent-amber">
+        <div class="lbl">f′(x) 기울기</div>
+        <div class="num" id="sd">—</div>
+      </div>
+      <div class="stat-card accent-teal">
+        <div class="lbl">반복 횟수</div>
+        <div class="num" id="si">0</div>
+      </div>
+    </div>
+
+    <div class="controls-card">
+      <div class="controls-title">파라미터 조정</div>
+
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          <span class="ctrl-name">a (2차 계수)</span>
+          <span class="ctrl-val" id="va">1.0</span>
+        </div>
+        <input type="range" id="ra" min="0.2" max="3" step="0.1" value="1">
+      </div>
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          <span class="ctrl-name">b (1차 계수)</span>
+          <span class="ctrl-val" id="vb">-2.0</span>
+        </div>
+        <input type="range" id="rb" min="-4" max="4" step="0.1" value="-2">
+      </div>
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          <span class="ctrl-name">c (상수)</span>
+          <span class="ctrl-val" id="vc">1.0</span>
+        </div>
+        <input type="range" id="rc" min="-3" max="3" step="0.1" value="1">
+      </div>
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          <span class="ctrl-name" style="color:var(--amber)">α 학습률</span>
+          <span class="ctrl-val" style="color:var(--amber)" id="vl">0.15</span>
+        </div>
+        <input type="range" id="rl" min="0.01" max="0.49" step="0.01" value="0.15" class="lr-range">
+      </div>
+
+      <div class="btn-row">
+        <button class="primary" id="btnPlay" onclick="togglePlay()">▶ 시작</button>
+        <button onclick="randomStart()">↺ 랜덤</button>
+        <button onclick="reset()">⊘ 초기화</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="info-bar">
+  <div class="info-dot idle" id="infoDot"></div>
+  <div id="infoText">슬라이더로 포물선 모양을 조정하고 ▶ 시작을 눌러보세요.</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#7c6ef5"></div>2차 함수 f(x)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f07060"></div>현재 위치</div>
+  <div class="legend-item"><div class="legend-line" style="background:rgba(245,166,35,0.8);border-radius:1px"></div>접선 (기울기)</div>
+  <div class="legend-item"><div class="legend-line" style="background:rgba(240,112,96,0.4);border-radius:1px;height:1px;border-top:2px dashed rgba(240,112,96,0.5)"></div>이동 궤적</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3fcf8e"></div>최솟점 (global min)</div>
+</div>
+
+<script>
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+
+let a=1, b=-2, c=1, lr=0.15;
+let px=3.5, running=false, iter=0, rafId=null;
+let trail=[];
+
+const f = x => a*x*x + b*x + c;
+const df = x => 2*a*x + b;
+const minX = () => -b/(2*a);
+
+function resize() {
+  const dpr = window.devicePixelRatio||1;
+  const rect = cv.getBoundingClientRect();
+  cv.width = rect.width * dpr;
+  cv.height = rect.height * dpr;
+}
+
+function getYRange() {
+  const ys = [];
+  for(let x=-6.5; x<=6.5; x+=0.1) ys.push(f(x));
+  const mn = Math.min(...ys), mx = Math.max(...ys);
+  const pad = (mx-mn)*0.15;
+  return [mn-pad, mx+pad];
+}
+
+function draw() {
+  resize();
+  const dpr = window.devicePixelRatio||1;
+  const W = cv.width/dpr, H = cv.height/dpr;
+  ctx.save(); ctx.scale(dpr,dpr);
+
+  const PAD = { t:20, r:20, b:32, l:42 };
+  const yr = getYRange();
+  const xMin=-6.5, xMax=6.5;
+
+  const toC = (x,y) => [
+    PAD.l + (x-xMin)/(xMax-xMin)*(W-PAD.l-PAD.r),
+    H - PAD.b - (y-yr[0])/(yr[1]-yr[0])*(H-PAD.t-PAD.b)
+  ];
+
+  ctx.clearRect(0,0,W,H);
+
+  /* grid */
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  for(let gx=-6; gx<=6; gx++) {
+    const [cx] = toC(gx,0);
+    ctx.beginPath(); ctx.moveTo(cx,PAD.t); ctx.lineTo(cx,H-PAD.b); ctx.stroke();
+  }
+  for(let gy=-3; gy<=10; gy+=2) {
+    if(gy < yr[0] || gy > yr[1]) continue;
+    const [,cy] = toC(0,gy);
+    ctx.beginPath(); ctx.moveTo(PAD.l,cy); ctx.lineTo(W-PAD.r,cy); ctx.stroke();
+  }
+
+  /* axes */
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 1;
+  const [ax0,ay] = toC(xMin,0), [ax1] = toC(xMax,0);
+  ctx.beginPath(); ctx.moveTo(ax0,ay); ctx.lineTo(ax1,ay); ctx.stroke();
+  const [ox,oy0] = toC(0,yr[0]), [,oy1] = toC(0,yr[1]);
+  ctx.beginPath(); ctx.moveTo(ox,oy0); ctx.lineTo(ox,oy1); ctx.stroke();
+
+  /* axis labels */
+  ctx.font = '10px JetBrains Mono, monospace';
+  ctx.fillStyle = 'rgba(232,234,242,0.25)';
+  ctx.textAlign = 'center';
+  for(let gx=-6; gx<=6; gx+=2) {
+    const [cx,cy] = toC(gx,0);
+    ctx.fillText(gx, cx, cy+14);
+  }
+  ctx.textAlign = 'right';
+  for(let gy=-2; gy<=10; gy+=2) {
+    if(gy < yr[0]+0.3 || gy > yr[1]-0.3) continue;
+    const [,cy] = toC(0,gy);
+    ctx.fillText(gy, PAD.l-5, cy+3);
+  }
+
+  /* curve glow */
+  const grad = ctx.createLinearGradient(0,0,W,0);
+  grad.addColorStop(0,'rgba(124,110,245,0)');
+  grad.addColorStop(0.5,'rgba(124,110,245,0.3)');
+  grad.addColorStop(1,'rgba(124,110,245,0)');
+  ctx.strokeStyle = grad;
+  ctx.lineWidth = 6;
+  ctx.globalAlpha = 0.4;
+  ctx.beginPath();
+  let first=true;
+  for(let x=xMin; x<=xMax; x+=0.05) {
+    const [cx,cy] = toC(x,f(x));
+    first ? ctx.moveTo(cx,cy) : ctx.lineTo(cx,cy); first=false;
+  }
+  ctx.stroke();
+  ctx.globalAlpha = 1;
+
+  /* curve */
+  ctx.strokeStyle = '#7c6ef5';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath(); first=true;
+  for(let x=xMin; x<=xMax; x+=0.04) {
+    const [cx,cy] = toC(x,f(x));
+    first ? ctx.moveTo(cx,cy) : ctx.lineTo(cx,cy); first=false;
+  }
+  ctx.stroke();
+
+  /* minimum marker */
+  const mx2 = minX();
+  if(mx2 >= xMin && mx2 <= xMax) {
+    const [mcx,mcy] = toC(mx2, f(mx2));
+    ctx.beginPath(); ctx.arc(mcx,mcy,5,0,Math.PI*2);
+    ctx.fillStyle='#3fcf8e'; ctx.fill();
+    ctx.strokeStyle='rgba(63,207,142,0.3)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.arc(mcx,mcy,9,0,Math.PI*2); ctx.stroke();
+    ctx.font='10px JetBrains Mono, monospace';
+    ctx.fillStyle='#3fcf8e'; ctx.textAlign='center';
+    ctx.fillText('min', mcx, mcy-14);
+  }
+
+  /* trail */
+  if(trail.length>1) {
+    for(let i=1; i<trail.length; i++) {
+      const alpha = (i/trail.length)*0.6;
+      const [tx0,ty0]=toC(trail[i-1][0],trail[i-1][1]);
+      const [tx1,ty1]=toC(trail[i][0],trail[i][1]);
+      ctx.beginPath(); ctx.moveTo(tx0,ty0); ctx.lineTo(tx1,ty1);
+      ctx.strokeStyle=`rgba(240,112,96,${alpha})`;
+      ctx.lineWidth=1.5; ctx.setLineDash([3,2]); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  /* tangent line */
+  const slope = df(px);
+  const tlen = 1.8;
+  const [tc0x,tc0y]=toC(px-tlen, f(px)-slope*tlen);
+  const [tc1x,tc1y]=toC(px+tlen, f(px)+slope*tlen);
+  ctx.beginPath(); ctx.moveTo(tc0x,tc0y); ctx.lineTo(tc1x,tc1y);
+  ctx.strokeStyle='rgba(245,166,35,0.75)'; ctx.lineWidth=1.5;
+  ctx.setLineDash([5,3]); ctx.stroke(); ctx.setLineDash([]);
+
+  /* gradient arrow */
+  const [bx,by]=toC(px,f(px));
+  const arrowPx = -slope * 18;
+  if(Math.abs(arrowPx)>4) {
+    const dir = arrowPx>0?1:-1;
+    ctx.strokeStyle='rgba(240,112,96,0.9)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(bx,by); ctx.lineTo(bx+arrowPx,by); ctx.stroke();
+    ctx.fillStyle='rgba(240,112,96,0.9)';
+    ctx.beginPath();
+    ctx.moveTo(bx+arrowPx, by);
+    ctx.lineTo(bx+arrowPx-dir*8, by-4);
+    ctx.lineTo(bx+arrowPx-dir*8, by+4);
+    ctx.fill();
+  }
+
+  /* ball */
+  const [bx2,by2]=toC(px,f(px));
+  ctx.beginPath(); ctx.arc(bx2,by2,8,0,Math.PI*2);
+  const rg = ctx.createRadialGradient(bx2-2,by2-2,1,bx2,by2,8);
+  rg.addColorStop(0,'rgba(255,130,110,1)');
+  rg.addColorStop(1,'rgba(240,112,96,0.8)');
+  ctx.fillStyle=rg; ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1; ctx.stroke();
+
+  ctx.restore();
+
+  document.getElementById('sx').textContent = px.toFixed(3);
+  document.getElementById('sy').textContent = f(px).toFixed(3);
+  document.getElementById('sd').textContent = df(px).toFixed(3);
+  document.getElementById('si').textContent = iter;
+}
+
+let animFrame=null;
+function step() {
+  if(!running) return;
+  const grad = df(px);
+  px = px - lr * grad;
+  iter++;
+  trail.push([px, f(px)]);
+  if(trail.length>100) trail.shift();
+  draw();
+
+  const converged = Math.abs(grad)<0.001 || Math.abs(px-minX())<0.003;
+  if(converged) {
+    running=false;
+    document.getElementById('btnPlay').textContent='▶ 시작';
+    document.getElementById('btnPlay').className='primary';
+    setInfo('done', `수렴 완료! x = ${minX().toFixed(3)}, f(x) = ${f(minX()).toFixed(3)} (총 ${iter}번 반복)`);
+    return;
+  }
+  if(Math.abs(px)>25) {
+    running=false;
+    document.getElementById('btnPlay').textContent='▶ 시작';
+    document.getElementById('btnPlay').className='primary';
+    setInfo('diverge', `발산했습니다. 학습률 α를 줄여보세요 (현재 α = ${lr.toFixed(2)})`);
+    return;
+  }
+  rafId = setTimeout(() => requestAnimationFrame(step), 55);
+}
+
+function togglePlay() {
+  running=!running;
+  if(running) {
+    document.getElementById('btnPlay').textContent='⏸ 정지';
+    document.getElementById('btnPlay').className='running';
+    setInfo('run', `x ← x − α·f′(x)  (α=${lr.toFixed(2)})  이동 중...`);
+    step();
+  } else {
+    document.getElementById('btnPlay').textContent='▶ 시작';
+    document.getElementById('btnPlay').className='primary';
+    setInfo('idle','일시정지됨.');
+  }
+}
+
+function randomStart() {
+  stop();
+  px = +(Math.random()*10-5).toFixed(2);
+  iter=0; trail=[[px,f(px)]];
+  draw();
+  setInfo('idle', `새 시작점: x = ${px.toFixed(2)} → ▶ 시작을 누르세요`);
+}
+
+function reset() {
+  stop();
+  px=3.5; iter=0; trail=[[px,f(px)]];
+  draw();
+  setInfo('idle','초기화됨. ▶ 시작을 누르세요.');
+}
+
+function stop() {
+  running=false;
+  if(rafId) clearTimeout(rafId);
+  document.getElementById('btnPlay').textContent='▶ 시작';
+  document.getElementById('btnPlay').className='primary';
+}
+
+function setInfo(state, msg) {
+  const dot = document.getElementById('infoDot');
+  dot.className = 'info-dot ' + (state==='run'?'':state==='done'?'done':state==='diverge'?'diverge':'idle');
+  document.getElementById('infoText').textContent = msg;
+}
+
+function bindSlider(id, vid, setter, digits) {
+  document.getElementById(id).addEventListener('input', e => {
+    const v = parseFloat(e.target.value);
+    document.getElementById(vid).textContent = v.toFixed(digits);
+    setter(v);
+    iter=0; trail=[[px,f(px)]];
+    draw();
+  });
+}
+
+bindSlider('ra','va', v=>{ a=v; }, 1);
+bindSlider('rb','vb', v=>{ b=v; }, 1);
+bindSlider('rc','vc', v=>{ c=v; }, 1);
+bindSlider('rl','vl', v=>{ lr=v; }, 2);
+
+window.addEventListener('resize', () => draw());
+window.addEventListener('load', () => { trail=[[px,f(px)]]; draw(); setInfo('idle','슬라이더로 포물선 모양을 조정하고 ▶ 시작을 눌러보세요.'); });
+</script>
+</body>
+</html>
