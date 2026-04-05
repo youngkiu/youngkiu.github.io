@@ -158,7 +158,7 @@ All content is in Korean (language code: `ko`). When editing:
 - Privacy policies follow Korean Personal Information Protection Act requirements
 
 ## Contact Information
-- Email: youngkiu@gmail.com
+- Email: easylifelab.developer@gmail.com
 - Contact appears in footer and privacy policies
 
 ## Google Services Integration
