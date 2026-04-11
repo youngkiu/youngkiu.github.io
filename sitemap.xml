@@ -24,6 +24,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://easylifelab.site/download/stock-rise-radar.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://easylifelab.site/download/pilltime.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -47,6 +52,11 @@
   </url>
   <url>
     <loc>https://easylifelab.site/privacy/upcoming_dividend.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://easylifelab.site/privacy/stock_rise_radar.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
