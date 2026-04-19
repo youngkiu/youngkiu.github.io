@@ -39,6 +39,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://easylifelab.site/download/etf-tracking.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://easylifelab.site/download/pilltime.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -77,6 +82,11 @@
   </url>
   <url>
     <loc>https://easylifelab.site/privacy/corkage_map.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://easylifelab.site/privacy/etf_tracking.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
