@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>조용한 상승 주식 - 앱 다운로드</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f7;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #1d1d1f;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #86868b;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .store-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .play-store {
+            background-color: #34a853;
+            color: white;
+        }
+        .store-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 20px;
+        }
+        .features {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .features h2 {
+            color: #1d1d1f;
+            margin-bottom: 15px;
+        }
+        .features ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .features li {
+            color: #86868b;
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .features li:before {
+            content: "•";
+            color: #0071e3;
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="../images/optimized/quiet_rise_stock_icon_optimized.png" alt="조용한 상승 주식 앱 아이콘">
+        </div>
+        <h1>조용한 상승 주식</h1>
+        <p>변동성이 낮고 꾸준히 상승하는 종목을 찾아보세요.<br>자동으로 이동되지 않으면 아래 버튼을 사용하세요.</p>
+        <div class="buttons">
+            <a href="https://play.google.com/store/apps/details?id=com.youngkiu.quiet_rise_stock" class="store-button play-store" id="android-link">
+                Google Play에서 다운로드
+            </a>
+        </div>
+        <div class="features">
+            <h2>주요 기능</h2>
+            <ul>
+                <li>변동성이 낮고 꾸준히 상승하는 종목을 분석합니다.</li>
+                <li>KOSPI, KOSDAQ, ETF 등 시장별 필터링이 가능합니다.</li>
+                <li>시가총액별(대형주/중형주/소형주) 필터를 지원합니다.</li>
+                <li>회원가입 없이 간편하게 이용할 수 있습니다.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const isAndroid = /Android/.test(navigator.userAgent);
+            const playStoreLink = "https://play.google.com/store/apps/details?id=com.youngkiu.quiet_rise_stock";
+            document.getElementById('android-link').href = playStoreLink;
+            if (isAndroid) {
+                window.location.href = playStoreLink;
+            }
+        });
+    </script>
+</body>
+</html>

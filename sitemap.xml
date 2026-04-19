@@ -29,6 +29,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://easylifelab.site/download/quiet-rise-stock.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://easylifelab.site/download/corkage-map.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://easylifelab.site/download/pilltime.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -57,6 +67,16 @@
   </url>
   <url>
     <loc>https://easylifelab.site/privacy/stock_rise_radar.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://easylifelab.site/privacy/quiet_rise_stock.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://easylifelab.site/privacy/corkage_map.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
