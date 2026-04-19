@@ -2,39 +2,41 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Easy Life Lab - 일상을 편리하게 만드는 앱</title>
-    <meta name="description" content="Easy Life Lab은 종점 출발 버스, 주식 알리미, 배당락 알림 등 일상을 편리하게 만드는 11개의 모바일 앱을 제공합니다.">
+    <meta name="description" content="Easy Life Lab은 종점 출발 버스, 주식 알리미, 배당락 알림 등 일상을 편리하게 만드는 다양한 모바일 앱을 제공합니다.">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://easylifelab.site/">
 
-    <!-- Favicon (SVG 텍스트 임시 로고 — 정식 로고로 교체 예정) -->
+    <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%23FF7B54%22/><text x=%2250%22 y=%2265%22 font-size=%2242%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22bold%22>ELL</text></svg>">
 
-    <!-- Google Analytics 추적 코드 -->
-    <!-- Google tag (gtag.js) -->
-    <!-- 아래 'G-XXXXXXXXXX'를 Google Analytics에서 발급받은 실제 측정 ID로 변경하세요 -->
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#FF7B54" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1A1A1A" media="(prefers-color-scheme: dark)">
+
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7N4QX98Z7M"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-7N4QX98Z7M');
     </script>
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://easylifelab.site/">
     <meta property="og:title" content="Easy Life Lab - 일상을 편리하게 만드는 앱">
-    <meta property="og:description" content="Easy Life Lab은 종점 출발 버스, 주식 알리미, 배당락 알림 등 일상을 편리하게 만드는 11개의 모바일 앱을 제공합니다.">
+    <meta property="og:description" content="Easy Life Lab은 종점 출발 버스, 주식 알리미, 배당락 알림 등 일상을 편리하게 만드는 다양한 모바일 앱을 제공합니다.">
     <meta property="og:image" content="https://easylifelab.site/images/og_image.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://easylifelab.site/">
     <meta property="twitter:title" content="Easy Life Lab - 일상을 편리하게 만드는 앱">
-    <meta property="twitter:description" content="Easy Life Lab은 종점 출발 버스, 주식 알리미, 배당락 알림 등 일상을 편리하게 만드는 11개의 모바일 앱을 제공합니다.">
+    <meta property="twitter:description" content="Easy Life Lab은 종점 출발 버스, 주식 알리미, 배당락 알림 등 일상을 편리하게 만드는 다양한 모바일 앱을 제공합니다.">
     <meta property="twitter:image" content="https://easylifelab.site/images/og_image.png">
 
     <link rel="stylesheet" href="css/style.css">
@@ -47,24 +49,14 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "복용일지",
-      "applicationCategory": "HealthApplication",
-      "operatingSystem": "Android, iOS",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "KRW"
-      },
-      "description": "약 복용 기록을 간편하게 관리하는 앱입니다. 주기적으로 먹는 약에 대해 기록을 남기고 관리할 수 있습니다.",
-      "image": "https://easylifelab.site/app_logo.png",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Easy Life Lab",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://easylifelab.site/app_logo.png"
-        }
+      "@type": "Organization",
+      "name": "Easy Life Lab",
+      "url": "https://easylifelab.site",
+      "logo": "https://easylifelab.site/images/og_image.png",
+      "description": "일상을 편리하게 만드는 모바일 앱을 개발하는 팀",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "easylifelab.developer@gmail.com"
       }
     }
     </script>
@@ -84,20 +76,17 @@
                     <li><a href="support/">고객 지원</a></li>
                 </ul>
             </nav>
-            <div class="menu-toggle">
-                <i class="fas fa-bars"></i>
-            </div>
         </div>
     </header>
 
     <section id="home" class="hero">
         <div class="container">
             <div class="hero-content">
-                <h2>더 나은 일상을 위한 앱</h2>
-                <p>Easy Life Lab은 여러분의 일상을 더 편리하게 만드는 모바일 앱을 개발합니다.</p>
+                <h2>일상을 편리하게</h2>
+                <p>투자, 생활, 지도 등 다양한 앱 서비스를 제공합니다.</p>
                 <div class="hero-buttons">
                     <a href="#apps" class="btn">앱 살펴보기</a>
-                    <a href="privacy/" class="btn btn-secondary">개인정보처리방침</a>
+                    <a href="support/" class="btn btn-secondary">고객 지원</a>
                 </div>
             </div>
         </div>
@@ -106,45 +95,34 @@
     <section id="apps" class="apps">
         <div class="container">
             <h2 class="section-title">우리의 앱</h2>
-            <div class="app-grid">
-                <!-- 1. 종점 출발 버스 (히트작) -->
-                <div class="app-card">
-                    <span class="app-badge popular">인기</span>
-                    <div class="app-icon">
-                        <img src="images/optimized/busdeparture_icon_optimized.png" alt="종점 출발 버스 앱 아이콘">
-                    </div>
-                    <div class="app-info">
-                        <h3>종점 출발 버스</h3>
-                        <p>종점에서 출발하는 버스의 상태 변화를 음성으로 안내 받을 수 있어요. 다가오는 버스가 없어도 마지막으로 지나간 버스의 위치를 알려 드립니다. 2개의 버스 노선을 한 화면에서 모니터링 할 수 있습니다. 현재, 수도권(서울, 경기, 인천) 버스 노선 안내를 지원합니다.</p>
-                        <div class="app-tech">
-                            <span class="tech-tag">GraphQL</span>
-                            <span class="tech-tag">MongoDB</span>
-                        </div>
-                        <div class="app-links">
-                            <a href="https://play.google.com/store/apps/details?id=com.youngkiu.busdeparture" target="_blank" class="store-link">
-                                <img src="images/optimized/google_play_badge_optimized.png" alt="Google Play">
-                            </a>
-                            <a href="https://apps.apple.com/kr/app/종점-출발-버스/id6736763977" target="_blank" class="store-link">
-                                <img src="images/optimized/app_store_badge_optimized.png" alt="App Store">
-                            </a>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- 2. 주식·코인 무릎/어깨 알리미 (요즘 잘나감) -->
-                <div class="app-card">
-                    <span class="app-badge hot">HOT</span>
-                    <div class="app-icon">
-                        <img src="images/optimized/stock_knee_shoulder_icon_optimized.png" alt="주식·코인 무릎/어깨 알리미 앱 아이콘">
-                    </div>
-                    <div class="app-info">
-                        <h3>주식·코인 무릎/어깨 알리미</h3>
-                        <p>관심 종목의 무릎(저점)과 어깨(고점)를 실시간으로 모니터링하고, 설정한 조건에 맞는 알림을 푸시로 받아 투자 타이밍을 놓치지 않습니다. Google 또는 Apple 계정으로 간편하게 로그인하여 여러 기기에서 설정을 동기화할 수 있습니다.</p>
+            <!-- Category Tabs -->
+            <div class="category-tabs" role="tablist">
+                <button class="category-tab active" data-category="all">전체</button>
+                <button class="category-tab" data-category="invest"><i class="fas fa-chart-line"></i> 투자/주식</button>
+                <button class="category-tab" data-category="life"><i class="fas fa-heart"></i> 생활</button>
+                <button class="category-tab" data-category="map"><i class="fas fa-map-marked-alt"></i> 지도</button>
+            </div>
+
+            <!-- 투자/주식 -->
+            <div class="app-category" data-category="invest">
+                <h3 class="category-title"><i class="fas fa-chart-line"></i> 투자/주식</h3>
+                <div class="app-carousel">
+
+                    <!-- 주식·코인 무릎/어깨 알리미 -->
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <img class="app-card-icon" src="images/optimized/stock_knee_shoulder_icon_optimized.png" alt="주식·코인 무릎/어깨 알리미" loading="lazy">
+                            <div class="app-card-title">
+                                <h3>주식·코인 무릎/어깨 알리미</h3>
+                                <span class="app-badge hot">HOT</span>
+                            </div>
+                        </div>
+                        <p class="app-card-desc">관심 종목의 무릎(저점)과 어깨(고점)를 실시간으로 모니터링하고, 설정한 조건에 맞는 알림을 푸시로 받아 투자 타이밍을 놓치지 않습니다.</p>
                         <div class="app-tech">
                             <span class="tech-tag">Firebase</span>
                             <span class="tech-tag">Push Notification</span>
                             <span class="tech-tag">Google Sign-In</span>
-                            <span class="tech-tag">Apple Sign-In</span>
                         </div>
                         <div class="app-links">
                             <a href="https://play.google.com/store/apps/details?id=com.youngkiu.stock_knee_shoulder" target="_blank" class="store-link">
@@ -155,17 +133,17 @@
                             </a>
                         </div>
                     </div>
-                </div>
 
-                <!-- 3. 조용한 상승 주식 -->
-                <div class="app-card">
-                    <span class="app-badge new">NEW</span>
-                    <div class="app-icon">
-                        <img src="images/optimized/quiet_rise_stock_icon_optimized.png" alt="조용한 상승 주식 앱 아이콘">
-                    </div>
-                    <div class="app-info">
-                        <h3>조용한 상승 주식</h3>
-                        <p>변동성이 낮고 꾸준히 상승하는 종목을 분석하여 안정적인 투자 기회를 찾아줍니다. 시장별, 시가총액별 필터링과 맞춤 분석 기간 설정이 가능합니다.</p>
+                    <!-- 조용한 상승 주식 -->
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <img class="app-card-icon" src="images/optimized/quiet_rise_stock_icon_optimized.png" alt="조용한 상승 주식" loading="lazy">
+                            <div class="app-card-title">
+                                <h3>조용한 상승 주식</h3>
+                                <span class="app-badge new">NEW</span>
+                            </div>
+                        </div>
+                        <p class="app-card-desc">변동성이 낮고 꾸준히 상승하는 종목을 분석하여 안정적인 투자 기회를 찾아줍니다. 시장별, 시가총액별 필터링이 가능합니다.</p>
                         <div class="app-tech">
                             <span class="tech-tag">Firebase</span>
                             <span class="tech-tag">Push Notification</span>
@@ -176,17 +154,17 @@
                             </a>
                         </div>
                     </div>
-                </div>
 
-                <!-- 4. 주식 상승레이더 (상승 추세 종목 탐지) -->
-                <div class="app-card">
-                    <span class="app-badge new">NEW</span>
-                    <div class="app-icon">
-                        <img src="images/optimized/stock_rise_radar_icon_optimized.png" alt="주식 상승레이더 앱 아이콘">
-                    </div>
-                    <div class="app-info">
-                        <h3>주식 상승레이더</h3>
-                        <p>상승 추세의 종목을 실시간으로 탐지하고, 설정한 조건에 맞는 종목 발견 시 푸시 알림을 받아 매매 타이밍을 놓치지 않습니다.</p>
+                    <!-- 주식 상승레이더 -->
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <img class="app-card-icon" src="images/optimized/stock_rise_radar_icon_optimized.png" alt="주식 상승레이더" loading="lazy">
+                            <div class="app-card-title">
+                                <h3>주식 상승레이더</h3>
+                                <span class="app-badge new">NEW</span>
+                            </div>
+                        </div>
+                        <p class="app-card-desc">상승 추세의 종목을 실시간으로 탐지하고, 설정한 조건에 맞는 종목 발견 시 푸시 알림을 받아 매매 타이밍을 놓치지 않습니다.</p>
                         <div class="app-tech">
                             <span class="tech-tag">Firebase</span>
                             <span class="tech-tag">Push Notification</span>
@@ -200,17 +178,17 @@
                             </a>
                         </div>
                     </div>
-                </div>
 
-                <!-- 5. ETF 편입알리미 -->
-                <div class="app-card">
-                    <span class="app-badge new">NEW</span>
-                    <div class="app-icon">
-                        <img src="images/optimized/etf_tracking_icon_optimized.png" alt="ETF 편입알리미 앱 아이콘">
-                    </div>
-                    <div class="app-info">
-                        <h3>ETF 편입알리미</h3>
-                        <p>관심 ETF의 구성종목 변경을 실시간으로 모니터링하고, 편입/편출 종목이 발생하면 푸시 알림을 받아 ETF 투자 전략을 세울 수 있습니다.</p>
+                    <!-- ETF 편입알리미 -->
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <img class="app-card-icon" src="images/optimized/etf_tracking_icon_optimized.png" alt="ETF 편입알리미" loading="lazy">
+                            <div class="app-card-title">
+                                <h3>ETF 편입알리미</h3>
+                                <span class="app-badge new">NEW</span>
+                            </div>
+                        </div>
+                        <p class="app-card-desc">관심 ETF의 구성종목 변경을 실시간으로 모니터링하고, 편입/편출 종목이 발생하면 푸시 알림을 받습니다.</p>
                         <div class="app-tech">
                             <span class="tech-tag">Firebase</span>
                             <span class="tech-tag">Push Notification</span>
@@ -224,17 +202,17 @@
                             </a>
                         </div>
                     </div>
-                </div>
 
-                <!-- 6. 다가오는 배당락 -->
-                <div class="app-card">
-                    <span class="app-badge new">NEW</span>
-                    <div class="app-icon">
-                        <img src="images/optimized/upcoming_dividend_icon_optimized.png" alt="다가오는 배당락 앱 아이콘">
-                    </div>
-                    <div class="app-info">
-                        <h3>다가오는 배당락</h3>
-                        <p>관심 종목의 배당락일을 실시간으로 모니터링하고, 설정한 일수 전에 푸시 알림을 받아 배당 투자 타이밍을 놓치지 않습니다.</p>
+                    <!-- 다가오는 배당락 -->
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <img class="app-card-icon" src="images/optimized/upcoming_dividend_icon_optimized.png" alt="다가오는 배당락" loading="lazy">
+                            <div class="app-card-title">
+                                <h3>다가오는 배당락</h3>
+                                <span class="app-badge new">NEW</span>
+                            </div>
+                        </div>
+                        <p class="app-card-desc">관심 종목의 배당락일을 실시간으로 모니터링하고, 설정한 일수 전에 푸시 알림을 받아 배당 투자 타이밍을 놓치지 않습니다.</p>
                         <div class="app-tech">
                             <span class="tech-tag">Firebase</span>
                             <span class="tech-tag">Push Notification</span>
@@ -248,16 +226,48 @@
                             </a>
                         </div>
                     </div>
-                </div>
 
-                <!-- 7. 카드 뭐 내지? (애정 앱) -->
-                <div class="app-card">
-                    <div class="app-icon">
-                        <img src="images/optimized/card_alarm_icon_optimized.png" alt="카드 뭐 내지? 앱 아이콘">
+                </div>
+            </div>
+
+            <!-- 생활 -->
+            <div class="app-category" data-category="life">
+                <h3 class="category-title"><i class="fas fa-heart"></i> 생활</h3>
+                <div class="app-carousel">
+
+                    <!-- 종점 출발 버스 -->
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <img class="app-card-icon" src="images/optimized/busdeparture_icon_optimized.png" alt="종점 출발 버스" loading="lazy">
+                            <div class="app-card-title">
+                                <h3>종점 출발 버스</h3>
+                                <span class="app-badge popular">인기</span>
+                            </div>
+                        </div>
+                        <p class="app-card-desc">종점에서 출발하는 버스의 상태 변화를 음성으로 안내합니다. 2개의 버스 노선을 한 화면에서 모니터링할 수 있습니다. 수도권 버스 노선을 지원합니다.</p>
+                        <div class="app-tech">
+                            <span class="tech-tag">GraphQL</span>
+                            <span class="tech-tag">MongoDB</span>
+                        </div>
+                        <div class="app-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.youngkiu.busdeparture" target="_blank" class="store-link">
+                                <img src="images/optimized/google_play_badge_optimized.png" alt="Google Play">
+                            </a>
+                            <a href="https://apps.apple.com/kr/app/종점-출발-버스/id6736763977" target="_blank" class="store-link">
+                                <img src="images/optimized/app_store_badge_optimized.png" alt="App Store">
+                            </a>
+                        </div>
                     </div>
-                    <div class="app-info">
-                        <h3>카드 뭐 내지?</h3>
-                        <p>신용카드 승인문자(SMS,MMS,RCS)를 집계하여, 개별 신용카드 사용 실적 조건에 따라, 카드 사용을 최적화 합니다.</p>
+
+                    <!-- 카드 뭐 내지? -->
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <img class="app-card-icon" src="images/optimized/card_alarm_icon_optimized.png" alt="카드 뭐 내지?" loading="lazy">
+                            <div class="app-card-title">
+                                <h3>카드 뭐 내지?</h3>
+                            </div>
+                        </div>
+                        <p class="app-card-desc">신용카드 승인문자를 집계하여 개별 카드 실적 조건에 따라 카드 사용을 최적화합니다.</p>
                         <div class="app-tech">
                             <span class="tech-tag">App Push</span>
                             <span class="tech-tag">MariaDB</span>
@@ -271,27 +281,26 @@
                             </a>
                         </div>
                     </div>
-                </div>
 
-                <!-- 8. 복용일지 -->
-                <div class="app-card">
-                    <div class="app-icon">
-                        <img src="app_logo.png" alt="복용일지 앱 아이콘">
-                    </div>
-                    <div class="app-info">
-                        <h3>복용일지</h3>
-                        <p>주기적으로 먹는 약에 대해, 약의 주기와 함께 사용자 버튼을 생성하여, 약을 먹을때 마다 생성된 버튼을 눌러, 캘린더에 기록합니다. 약 뿐만 아니라, 주기적으로 발생하는 이벤트(칫솔/면도날 교환)도 약과 비슷하게 버튼을 만들어, 발생시 마다 버튼을 눌러 기록할 수 있습니다.</p>
-                        <div class="google-integration">
-                            <h4>Google 계정 연동 기능</h4>
+                    <!-- 복용일지 -->
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <img class="app-card-icon" src="app_logo.png" alt="복용일지" loading="lazy">
+                            <div class="app-card-title">
+                                <h3>복용일지</h3>
+                            </div>
+                        </div>
+                        <p class="app-card-desc">주기적으로 먹는 약의 복용 기록을 캘린더에 간편하게 관리합니다. 칫솔/면도날 교환 등 주기적 이벤트도 기록 가능합니다.</p>
+                        <details class="google-integration">
+                            <summary>Google 계정 연동 기능</summary>
                             <p>• Google 계정으로 간편 로그인하여 여러 기기에서 데이터 동기화<br>
                             • Google Calendar와 연동하여 복용 기록을 캘린더에 자동 저장<br>
                             • Google 계정 기본 정보(이메일, 프로필)는 인증 및 동기화 목적으로만 사용<br>
                             • Google Calendar 접근 권한은 복용 기록 캘린더 동기화 목적으로만 사용</p>
-                        </div>
+                        </details>
                         <div class="app-tech">
                             <span class="tech-tag">i18n(l10n)</span>
                             <span class="tech-tag">Firebase</span>
-                            <span class="tech-tag">Google Sign-In</span>
                             <span class="tech-tag">Google Calendar API</span>
                         </div>
                         <div class="app-links">
@@ -303,17 +312,25 @@
                             </a>
                         </div>
                     </div>
-                </div>
 
-                <!-- 9. 콜키지 맵 -->
-                <div class="app-card">
-                    <span class="app-badge new">NEW</span>
-                    <div class="app-icon">
-                        <img src="images/optimized/corkage_map_icon_optimized.png" alt="콜키지 맵 앱 아이콘">
-                    </div>
-                    <div class="app-info">
-                        <h3>콜키지 맵</h3>
-                        <p>콜키지 프리 음식점을 쉽게 찾고 등록할 수 있는 지도 기반 서비스입니다. 다른 사용자들과 콜키지 정보를 공유할 수 있습니다.</p>
+                </div>
+            </div>
+
+            <!-- 지도 -->
+            <div class="app-category" data-category="map">
+                <h3 class="category-title"><i class="fas fa-map-marked-alt"></i> 지도</h3>
+                <div class="app-carousel">
+
+                    <!-- 콜키지 맵 -->
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <img class="app-card-icon" src="images/optimized/corkage_map_icon_optimized.png" alt="콜키지 맵" loading="lazy">
+                            <div class="app-card-title">
+                                <h3>콜키지 맵</h3>
+                                <span class="app-badge new">NEW</span>
+                            </div>
+                        </div>
+                        <p class="app-card-desc">콜키지 프리 음식점을 쉽게 찾고 등록할 수 있는 지도 기반 서비스입니다. 다른 사용자들과 콜키지 정보를 공유할 수 있습니다.</p>
                         <div class="app-tech">
                             <span class="tech-tag">Kakao Map</span>
                             <span class="tech-tag">Kakao Login</span>
@@ -324,16 +341,16 @@
                             </a>
                         </div>
                     </div>
-                </div>
 
-                <!-- 10. 맛도리 지도 -->
-                <div class="app-card">
-                    <div class="app-icon">
-                        <img src="images/optimized/tasty_map_icon_optimized.png" alt="맛도리 지도 앱 아이콘">
-                    </div>
-                    <div class="app-info">
-                        <h3>맛도리 지도</h3>
-                        <p>파워블로거 https://blog.naver.com/begopa1092 맛집 지도입니다.</p>
+                    <!-- 맛도리 지도 -->
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <img class="app-card-icon" src="images/optimized/tasty_map_icon_optimized.png" alt="맛도리 지도" loading="lazy">
+                            <div class="app-card-title">
+                                <h3>맛도리 지도</h3>
+                            </div>
+                        </div>
+                        <p class="app-card-desc">파워블로거 맛집을 지도에서 한눈에 확인하세요.</p>
                         <div class="app-tech">
                             <span class="tech-tag">GIS</span>
                             <span class="tech-tag">Web Crawler</span>
@@ -348,16 +365,16 @@
                             </a>
                         </div>
                     </div>
-                </div>
 
-                <!-- 11. Toilet Password -->
-                <div class="app-card">
-                    <div class="app-icon">
-                        <img src="images/optimized/toilet_password_icon_optimized.png" alt="Toilet Password 앱 아이콘">
-                    </div>
-                    <div class="app-info">
-                        <h3>Toilet Password</h3>
-                        <p>상가에 있는 화장실 비밀번호를 간편하게 기록하고 관리하는 앱입니다.</p>
+                    <!-- Toilet Password -->
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <img class="app-card-icon" src="images/optimized/toilet_password_icon_optimized.png" alt="Toilet Password" loading="lazy">
+                            <div class="app-card-title">
+                                <h3>Toilet Password</h3>
+                            </div>
+                        </div>
+                        <p class="app-card-desc">상가에 있는 화장실 비밀번호를 간편하게 기록하고 관리하는 앱입니다.</p>
                         <div class="app-tech">
                             <span class="tech-tag">Flutter</span>
                         </div>
@@ -367,9 +384,10 @@
                             </a>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
+
         </div>
     </section>
 
@@ -377,8 +395,8 @@
         <div class="container">
             <h2 class="section-title">Easy Life Lab 소개</h2>
             <div class="about-content">
-                <p>Easy Life Lab은 사용자의 일상을 더 편리하게 만드는 모바일 앱을 개발하는 팀입니다. 우리는 사용자의 실제 문제를 해결하는 실용적인 앱을 만들기 위해 노력합니다.</p>
-                <p>현재 11개의 앱을 개발하여 서비스 중이며, 계속해서 새로운 아이디어를 발굴하고 있습니다. 우리의 목표는 기술을 통해 사람들의 일상을 더 쉽고 편리하게 만드는 것입니다.</p>
+                <p>Easy Life Lab은 사용자의 일상을 더 편리하게 만드는 모바일 앱을 개발하는 팀입니다.</p>
+                <p>다양한 앱을 개발하여 서비스 중이며, 계속해서 새로운 아이디어를 발굴하고 있습니다.</p>
             </div>
         </div>
     </section>
@@ -391,18 +409,9 @@
                 </div>
                 <div class="footer-links">
                     <ul>
-                        <li><a href="privacy/medication_diary.html">복용일지 개인정보처리방침</a></li>
-                        <li><a href="privacy/stock_knee_shoulder.html">주식·코인 무릎/어깨 알리미 개인정보처리방침</a></li>
-                        <li><a href="privacy/busdeparture.html">종점 출발 버스 개인정보처리방침</a></li>
-                        <li><a href="privacy/card_alarm.html">카드 뭐 내지? 개인정보처리방침</a></li>
-                        <li><a href="privacy/tasty_map.html">맛도리 지도 개인정보처리방침</a></li>
-                        <li><a href="privacy/toilet_password.html">Toilet Password 개인정보처리방침</a></li>
-                        <li><a href="privacy/upcoming_dividend.html">다가오는 배당락 개인정보처리방침</a></li>
-                        <li><a href="privacy/quiet_rise_stock.html">조용한 상승 주식 개인정보처리방침</a></li>
-                        <li><a href="privacy/stock_rise_radar.html">주식 상승레이더 개인정보처리방침</a></li>
-                        <li><a href="privacy/etf_tracking.html">ETF 편입알리미 개인정보처리방침</a></li>
-                        <li><a href="privacy/corkage_map.html">콜키지 맵 개인정보처리방침</a></li>
+                        <li><a href="privacy/">개인정보처리방침</a></li>
                         <li><a href="support/">고객 지원 센터</a></li>
+                        <li><a href="mailto:easylifelab.developer@gmail.com">문의하기</a></li>
                     </ul>
                 </div>
                 <div class="footer-copyright">
@@ -411,6 +420,25 @@
             </div>
         </div>
     </footer>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav" aria-label="모바일 네비게이션">
+        <a href="#home" class="bottom-nav-item active">
+            <i class="fas fa-home"></i><span>홈</span>
+        </a>
+        <a href="#apps" class="bottom-nav-item">
+            <i class="fas fa-th-large"></i><span>앱</span>
+        </a>
+        <a href="#about" class="bottom-nav-item">
+            <i class="fas fa-info-circle"></i><span>소개</span>
+        </a>
+        <a href="privacy/" class="bottom-nav-item">
+            <i class="fas fa-shield-alt"></i><span>정책</span>
+        </a>
+        <a href="support/" class="bottom-nav-item">
+            <i class="fas fa-headset"></i><span>지원</span>
+        </a>
+    </nav>
 
     <script src="js/main.js"></script>
 </body>
