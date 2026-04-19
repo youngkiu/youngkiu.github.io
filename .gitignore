@@ -48,4 +48,5 @@ jspm_packages/
 
 # Build files
 dist/
-build/img.png
+build/
+img.png
