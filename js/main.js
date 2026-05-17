@@ -71,13 +71,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // URL 앵커로 카테고리 활성화 (예: #apps-invest)
     const validCategories = ['invest', 'life', 'map'];
-    const hash = window.location.hash;
-    if (hash.startsWith('#apps-')) {
-        const cat = hash.replace('#apps-', '');
-        if (validCategories.includes(cat)) {
-            activateCategory(cat);
+
+    function handleHash() {
+        const hash = window.location.hash;
+        if (hash.startsWith('#apps-')) {
+            const cat = hash.replace('#apps-', '');
+            if (validCategories.includes(cat)) {
+                activateCategory(cat);
+                document.querySelector('#apps')?.scrollIntoView({ behavior: 'smooth' });
+            }
         }
     }
+
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
 
     // ===========================
     // Scroll animations (IntersectionObserver)
