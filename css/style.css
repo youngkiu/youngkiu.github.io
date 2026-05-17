@@ -317,6 +317,17 @@ nav ul li a:hover::after { width: 100%; }
 }
 .app-carousel::-webkit-scrollbar { display: none; }
 
+/* Filtered mode: vertical layout on mobile */
+.apps.filtered .app-carousel {
+    flex-direction: column;
+    overflow-x: visible;
+    scroll-snap-type: none;
+}
+.apps.filtered .app-card {
+    min-width: unset;
+    max-width: unset;
+}
+
 /* ===========================
    App Cards - App Store Style
    =========================== */
