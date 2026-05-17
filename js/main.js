@@ -51,6 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const categoryTabs = document.querySelectorAll('.category-tab');
     const appCategories = document.querySelectorAll('.app-category');
 
+    const appsSection = document.querySelector('.apps');
+
     categoryTabs.forEach(tab => {
         tab.addEventListener('click', function() {
             categoryTabs.forEach(t => t.classList.remove('active'));
@@ -59,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
             appCategories.forEach(section => {
                 section.style.display = (cat === 'all' || section.dataset.category === cat) ? '' : 'none';
             });
+            appsSection.classList.toggle('filtered', cat !== 'all');
         });
     });
 
