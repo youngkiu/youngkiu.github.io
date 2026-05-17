@@ -53,17 +53,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const appsSection = document.querySelector('.apps');
 
+    function activateCategory(cat) {
+        categoryTabs.forEach(t => t.classList.toggle('active', t.dataset.category === cat));
+        appCategories.forEach(section => {
+            section.style.display = (cat === 'all' || section.dataset.category === cat) ? '' : 'none';
+        });
+        appsSection.classList.toggle('filtered', cat !== 'all');
+    }
+
     categoryTabs.forEach(tab => {
         tab.addEventListener('click', function() {
-            categoryTabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
             const cat = this.dataset.category;
-            appCategories.forEach(section => {
-                section.style.display = (cat === 'all' || section.dataset.category === cat) ? '' : 'none';
-            });
-            appsSection.classList.toggle('filtered', cat !== 'all');
+            activateCategory(cat);
+            history.replaceState(null, '', cat === 'all' ? '#apps' : '#apps-' + cat);
         });
     });
+
+    // URL 앵커로 카테고리 활성화 (예: #apps-invest)
+    const hash = window.location.hash;
+    if (hash.startsWith('#apps-')) {
+        const cat = hash.replace('#apps-', '');
+        activateCategory(cat);
+    }
 
     // ===========================
     // Scroll animations (IntersectionObserver)
