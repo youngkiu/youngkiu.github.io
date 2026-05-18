@@ -20,7 +20,6 @@ Easy Life Lab은 사용자의 일상을 더 편리하게 만드는 모바일 앱
 3. **카드 뭐 내지?** - 신용카드 결제일 알림 서비스
    - 기술 스택: App Push, MariaDB
    - [Android 다운로드](https://play.google.com/store/apps/details?id=com.youngkiu.card_alarm)
-   - [소개 영상](https://www.youtube.com/@CreditCardAlarm)
 
 4. **종점 출발 버스** - 버스 종점 출발 정보를 실시간으로 확인하는 앱
    - 기술 스택: GraphQL, MongoDB
