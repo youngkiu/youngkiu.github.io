@@ -467,15 +467,6 @@ nav ul li a:hover::after { width: 100%; }
 .store-link img[src*="google_play_badge"] { height: 44px; width: auto; }
 .store-link img[src*="app_store_badge"] { height: 30px; width: auto; }
 
-.youtube-link {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    color: #ff0000;
-    font-weight: 500;
-    font-size: 0.85rem;
-}
-
 /* ===========================
    About Section
    =========================== */
