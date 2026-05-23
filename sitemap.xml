@@ -49,6 +49,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://easylifelab.site/download/hot-sector-stock.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://easylifelab.site/download/stock-investor-flow.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -102,6 +107,11 @@
   </url>
   <url>
     <loc>https://easylifelab.site/privacy/volume_spike_stock.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://easylifelab.site/privacy/hot_sector_stock.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
