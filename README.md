@@ -18,6 +18,8 @@ Easy Life Lab은 사용자의 일상을 더 편리하게 만드는 모바일 앱
 | 주식·코인 무릎/어깨 알리미 | Android, iOS |
 | 거래량 폭발 주식 | Android, iOS |
 | 뜨는 섹터 주식 | Android, iOS |
+| 공매도 레이더 | Android, iOS |
+| 주식 추세 시그널 | Android, iOS |
 | 주식 투자 흐름 | Android, iOS |
 | 조용한 상승 주식 | Android, iOS |
 | 주식 상승레이더 | Android, iOS |
