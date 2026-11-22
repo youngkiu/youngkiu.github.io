@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Homepage for Easy Life Lab (https://easylifelab.site), a static site on GitHub Pages. It lists the team's mobile apps and hosts each app's privacy policy and store download page. The current app list, grouped by category, is in `README.md`. All content is Korean (`lang="ko"`) in a formal, polite tone.
+Homepage for Easy Life Lab (https://easylifelab.site), a static site on GitHub Pages. It lists the team's mobile apps, hosts a privacy policy for each one, and has store download pages for most of them (카드 뭐 내지? and 맛도리 지도 have none). The current app list, grouped by category, is in `README.md`. All content is Korean (`lang="ko"`) in a formal, polite tone.
 
 ## Development
 
@@ -26,7 +26,7 @@ There is no build, lint, or test tooling: the site is plain HTML, CSS, and vanil
 
 ## Naming Conventions
 
-Each app has one slug, written in different forms depending on the file (example: stock trend signal):
+Each app has one slug, written in different forms depending on the file. Newer apps follow this pattern (example: stock trend signal):
 
 | File | Form |
 |---|---|
@@ -36,9 +36,15 @@ Each app has one slug, written in different forms depending on the file (example
 | Icons | `images/stock_trend_signal_icon.png` (original) and `images/optimized/stock_trend_signal_icon_optimized.png` (used by the pages) |
 | Android package | `com.youngkiu.stock_trend_signal` |
 
-Legacy exceptions:
-- 복용일지 uses `privacy/medication_diary.html`, `download/pilltime.html`, and the icon `app_logo.png`.
-- 종점 출발 버스 uses `privacy/busdeparture.html`.
+Older apps don't follow it. Copy their names from the existing files instead of building them from the pattern:
+
+| App | Exceptions |
+|---|---|
+| 복용일지 | privacy `medication_diary.html`, download `pilltime.html`, package `com.youngkiu.pilltime`. The homepage card uses `app_logo.png` in the repo root, while the download page uses `images/optimized/medication_diary_icon_optimized.png`. |
+| 종점 출발 버스 | privacy `busdeparture.html`, icon `busdeparture_icon*.png`, package `com.youngkiu.busdeparture` (the download page is still `bus-departure.html`) |
+| 콜키지 맵 | package `com.youngkiu.corkage_free` |
+| 다가오는 배당락 | package `com.youngkiu.upcoming_dividend.upcoming_dividend` |
+| Toilet Password | package `com.youngki_home.toilet_password` |
 
 ## Adding a New App
 
@@ -55,7 +61,7 @@ This happens in two separate PRs, at different times. Do only the stage that was
 
 ## Content Rules
 
-- Avoid exaggerated wording, especially for the investment apps. Don't use "실시간" or "놓치지 마세요/않습니다"; use "자동으로" or "수시" instead. Descriptions follow the pattern "…을 자동으로 모니터링하고, 주요 변동 시 푸시 알림으로 알려줍니다."
-- Every file ends with a trailing newline. Missing ones keep coming up in review.
+- Avoid exaggerated wording, especially for the investment apps. Don't use "실시간" or "놓치지 마세요/않습니다"; use "자동으로" or "수시" instead. New investment app descriptions use the pattern "…을 자동으로 모니터링하고, 주요 변동 시 푸시 알림으로 알려줍니다." Older cards have their own wording with app-specific details, so don't rewrite them to fit the pattern.
+- Make sure every file you create or edit ends with a trailing newline. About 20 older files are missing one, including templates you might copy, and the missing newline keeps coming up in review.
 - The 복용일지 card has a `<details class="google-integration">` block that discloses how Google Sign-In and Google Calendar data are used. Keep it when editing that card.
 - Site-wide: Google Analytics `G-7N4QX98Z7M`, AdMob verification in `ads.txt` and `app-ads.txt`, and the contact email `easylifelab.developer@gmail.com`.
