@@ -73,3 +73,4 @@ This happens in two separate PRs, at different times. Do only the stage that was
 - Make sure every file you create or edit ends with a trailing newline. About 20 older files are missing one, including templates you might copy, and the missing newline keeps coming up in review.
 - The 복용일지 card has a `<details class="google-integration">` block that discloses how Google Sign-In and Google Calendar data are used. Keep it when editing that card.
 - Site-wide: Google Analytics `G-7N4QX98Z7M`, AdMob verification in `ads.txt` and `app-ads.txt`, and the contact email `easylifelab.developer@gmail.com`.
+- Search engine ownership: Naver Search Advisor is verified by the `naver-site-verification` meta tag in the `<head>` of `index.html`, and Google Search Console by a DNS TXT record (Route 53). Don't remove either one, or ownership is lost.
