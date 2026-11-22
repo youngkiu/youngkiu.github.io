@@ -4,165 +4,64 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is the official homepage for Easy Life Lab, a mobile app development team. The website is hosted on GitHub Pages and showcases 5 mobile applications with Korean content. The site serves as a landing page with app information, privacy policies, and customer support pages.
+Homepage for Easy Life Lab (https://easylifelab.site), a static site on GitHub Pages. It lists the team's mobile apps, hosts a privacy policy for each one, and has store download pages for most of them (카드 뭐 내지? and 맛도리 지도 have none). The current app list, grouped by category, is in `README.md`. All content is Korean (`lang="ko"`) in a formal, polite tone.
 
-## Technology Stack
+## Development
 
-- **Static Website**: HTML5, CSS3, JavaScript (vanilla)
-- **Hosting**: GitHub Pages
-- **Domain**: easylifelab.site
-- **Fonts**: Noto Sans KR (Google Fonts)
-- **Icons**: Font Awesome 6.4.0
-- **Analytics**: Google Analytics (G-7N4QX98Z7M)
-- **Monetization**: Google AdMob (ads.txt)
+There is no build, lint, or test tooling: the site is plain HTML, CSS, and vanilla JS. Merging to `master` deploys through GitHub Pages, and the custom domain is set in `CNAME`.
 
-## Site Structure
+- Local preview: `python3 -m http.server 8000`, then open http://localhost:8000
+- Changes go through feature branches and PRs into `master` (`feature/<app>-privacy`, `feature/<app>-homepage`, `fix/...`). Commit messages are in Korean.
 
-```
-/
-├── index.html              # Main homepage (currently focused on "복용일지" app)
-├── css/
-│   ├── style.css          # Main stylesheet with CSS variables
-│   └── privacy.css        # Privacy policy page styles
-├── js/
-│   └── main.js            # Mobile menu, smooth scrolling, scroll animations
-├── images/                # App icons and store badges
-│   └── optimized/         # Optimized versions of images
-├── privacy/               # Privacy policy pages for each app
-│   ├── index.html         # Privacy policy index
-│   ├── medication_diary.html
-│   ├── busdeparture.html
-│   ├── card_alarm.html
-│   ├── tasty_map.html
-│   └── toilet_password.html
-├── support/               # Customer support pages
-├── download/              # App download landing pages
-└── ads.txt               # Google AdMob publisher file
-```
+## Architecture
 
-## Featured Applications
+- **`index.html`**: the only landing page. Apps are grouped in `<div class="app-category" data-category="invest|life|map">` blocks. Each app is an `.app-card` with an icon, title, optional badge (`<span class="app-badge hot|new|popular">`), description, `.tech-tag`s, and store badge links.
+- **`js/main.js`**: handles category tab filtering (`.category-tab[data-category]`), URL anchors `#apps-<category>`, the active state of the mobile bottom nav, and scroll animations. Anchors are checked against the `validCategories` array, so a new category has to be added there.
+- **`css/style.css`**: mobile-first styles shared by the index, privacy, and support pages. Design tokens live in `:root` (warm coral palette, `--primary-color: #FF7B54`), with a `prefers-color-scheme: dark` override. Breakpoints are `min-width: 768px` and `1024px`. `css/privacy.css` adds styles for the privacy pages.
+- **`privacy/index.html`**: a table of contents plus a short summary section for every app, each linking to that app's own page at `privacy/<app_name>.html`.
+- **`download/<app-name>.html`**: standalone pages with their own inline CSS and JS and no shared stylesheet. They detect iOS or Android from the user agent and redirect to the right store, so one link works on either OS. New ones are copied from a recent compact page such as `stock-trend-signal.html`.
+- **`apps/invest.html`**: a sharing landing page with its own OG image (`images/og_invest.png`) that JS-redirects to `/#apps-invest`.
+- **`lab/`**: standalone ML visualization pages. They are not linked from the homepage but are listed in the sitemap.
+- **`sitemap.xml`**: maintained by hand. It lists every download page and every app privacy page.
 
-1. **복용일지** (Medication Diary) - Main focus of current homepage
-   - Tech: i18n, Firebase Auth, Google Sign-In, Google Calendar API
-   - Platforms: Android, iOS
+## Naming Conventions
 
-2. **종점 출발 버스** (Bus Departure)
-   - Tech: GraphQL, MongoDB
-   - Platforms: Android, iOS
+Each app has one slug, written in different forms depending on the file. Newer apps follow this pattern (example: stock trend signal):
 
-3. **카드 뭐 내지?** (Card Alarm)
-   - Tech: App Push, MariaDB
-   - Platform: Android only
+| File | Form |
+|---|---|
+| Privacy page | `privacy/stock_trend_signal.html` (snake_case) |
+| Section id in `privacy/index.html` | `#stock-trend-signal` |
+| Download page | `download/stock-trend-signal.html` (kebab-case) |
+| Icons | `images/stock_trend_signal_icon.png` (original) and `images/optimized/stock_trend_signal_icon_optimized.png` (used by the pages) |
+| Android package | `com.youngkiu.stock_trend_signal` |
 
-4. **맛도리 지도** (Tasty Map)
-   - Tech: GIS, Web Crawler, PostgreSQL (PostGIS)
-   - Platforms: Android, iOS
+Older apps don't follow it. Copy their names from the existing files instead of building them from the pattern:
 
-5. **Toilet Password**
-   - Tech: Flutter
-   - Platform: Android only
+| App | Exceptions |
+|---|---|
+| 복용일지 | privacy `medication_diary.html`, download `pilltime.html`, package `com.youngkiu.pilltime`. The homepage card uses `app_logo.png` in the repo root, while the download page uses `images/optimized/medication_diary_icon_optimized.png`. |
+| 종점 출발 버스 | privacy `busdeparture.html`, icon `busdeparture_icon*.png`, package `com.youngkiu.busdeparture` (the download page is still `bus-departure.html`) |
+| 콜키지 맵 | package `com.youngkiu.corkage_free` |
+| 다가오는 배당락 | package `com.youngkiu.upcoming_dividend.upcoming_dividend` |
+| Toilet Password | package `com.youngki_home.toilet_password` |
 
-## Development Workflow
+## Adding a New App
 
-### No Build Process
-This is a static website with no build step. Changes to HTML, CSS, or JS are immediately live after pushing to the master branch.
+This happens in two separate PRs, at different times. Do only the stage that was asked for.
 
-### Deployment
-- **Branch**: `master` (main branch)
-- **Hosting**: Automatic deployment via GitHub Pages
-- **DNS**: Custom domain configured via CNAME file
+1. **Privacy policy**, before store submission, because store review needs its URL. Add only `privacy/<app_name>.html`, copied from a recent one, and update the `최종 업데이트` and `시행일` dates.
+2. **Homepage**, after store approval, once the store URLs exist. Put all of these in one PR:
+   - an app card in the right category in `index.html` (new apps get the `NEW` badge)
+   - the original icon in `images/` and the optimized icon in `images/optimized/`
+   - `download/<app-name>.html` (this needs both store URLs)
+   - a TOC entry and summary section in `privacy/index.html`
+   - download and privacy entries in `sitemap.xml`
+   - the app in the matching category table in `README.md`
 
-### Testing Changes Locally
-```bash
-# Simple HTTP server for local testing
-python3 -m http.server 8000
+## Content Rules
 
-# Or with Node.js
-npx http-server
-```
-
-Then visit http://localhost:8000
-
-### Git Workflow
-```bash
-# Check status
-git status
-
-# Stage and commit changes
-git add .
-git commit -m "Description of changes"
-
-# Push to GitHub (auto-deploys to GitHub Pages)
-git push origin master
-```
-
-## Key Design Patterns
-
-### CSS Variables (css/style.css:2-11)
-The site uses CSS custom properties for consistent theming:
-- `--primary-color: #4285f4` (Google Blue)
-- `--secondary-color: #34a853` (Google Green)
-- `--accent-color: #ea4335` (Google Red)
-- Color scheme follows Google Material Design principles
-
-### Responsive Design
-- Mobile-first approach
-- Breakpoints: 768px (tablet), 480px (mobile)
-- Mobile menu toggle with fixed positioning (css/style.css:523-595)
-
-### Scroll Effects (js/main.js)
-- Fixed header with scroll-based styling (line 43-57)
-- Animate-on-scroll for app cards and sections (line 59-79)
-- Smooth scrolling for anchor links (line 22-41)
-
-### SEO and Social Media
-The homepage includes:
-- Open Graph tags for Facebook
-- Twitter Card metadata
-- Structured Data (JSON-LD) for app information
-- Canonical URLs
-- Google Analytics tracking
-
-## Important URLs and Links
-
-### Store Links
-- Google Play: `https://play.google.com/store/apps/details?id=`
-- App Store: `https://apps.apple.com/kr/app/`
-
-### Store Badge Images
-- Google Play: `images/optimized/google_play_badge_optimized.png`
-- App Store: `images/optimized/app_store_badge_optimized.png`
-
-Note: Store badge sizing is handled in css/style.css:373-392
-
-## Content Management
-
-### Adding a New App
-1. Add app card to index.html section `#apps` following existing structure
-2. Add app icon to `images/` (80x80px display size)
-3. Create privacy policy page in `privacy/[app-name].html`
-4. Update footer links in index.html
-5. Update privacy/index.html with new app section
-
-### Updating Privacy Policies
-Each app has its own privacy policy HTML file in the `privacy/` directory. They all:
-- Share common header/footer structure
-- Link back to main site
-- Include last updated date
-- Follow Korean privacy law requirements
-
-## Korean Language Content
-All content is in Korean (language code: `ko`). When editing:
-- Maintain Korean text encoding (UTF-8)
-- Keep formal/polite tone consistent with existing content
-- Privacy policies follow Korean Personal Information Protection Act requirements
-
-## Contact Information
-- Email: easylifelab.developer@gmail.com
-- Contact appears in footer and privacy policies
-
-## Google Services Integration
-The 복용일지 (Medication Diary) app prominently features Google integration:
-- Google Sign-In for authentication
-- Google Calendar API for syncing medication records
-- Disclosure of data usage in the Google integration section (index.html:119-125)
+- Avoid exaggerated wording, especially for the investment apps. Don't use "실시간" or "놓치지 마세요/않습니다"; use "자동으로" or "수시" instead. New investment app descriptions use the pattern "…을 자동으로 모니터링하고, 주요 변동 시 푸시 알림으로 알려줍니다." Older cards have their own wording with app-specific details, so don't rewrite them to fit the pattern.
+- Make sure every file you create or edit ends with a trailing newline. About 20 older files are missing one, including templates you might copy, and the missing newline keeps coming up in review.
+- The 복용일지 card has a `<details class="google-integration">` block that discloses how Google Sign-In and Google Calendar data are used. Keep it when editing that card.
+- Site-wide: Google Analytics `G-7N4QX98Z7M`, AdMob verification in `ads.txt` and `app-ads.txt`, and the contact email `easylifelab.developer@gmail.com`.
