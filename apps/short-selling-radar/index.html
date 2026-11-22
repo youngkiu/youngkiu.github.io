@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>공매도 레이더 - 종목별 공매도 비중 알림 앱 | Easy Life Lab</title>
+    <meta name="description" content="종목별 공매도 비중을 자동으로 모니터링하고, 주요 변동 시 푸시 알림으로 알려줍니다.">
+    <link rel="canonical" href="https://easylifelab.site/apps/short-selling-radar/">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%23FF7B54%22/><text x=%2250%22 y=%2265%22 font-size=%2242%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22bold%22>ELL</text></svg>">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#FF7B54" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1A1A1A" media="(prefers-color-scheme: dark)">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7N4QX98Z7M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7N4QX98Z7M');
+    </script>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Easy Life Lab">
+    <meta property="og:url" content="https://easylifelab.site/apps/short-selling-radar/">
+    <meta property="og:title" content="공매도 레이더 - 종목별 공매도 비중 알림 앱 | Easy Life Lab">
+    <meta property="og:description" content="종목별 공매도 비중을 자동으로 모니터링하고, 주요 변동 시 푸시 알림으로 알려줍니다.">
+    <meta property="og:image" content="https://easylifelab.site/images/short_selling_radar_icon.png">
+    <meta property="twitter:card" content="summary">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MobileApplication",
+      "name": "공매도 레이더",
+      "description": "종목별 공매도 비중을 자동으로 모니터링하고, 주요 변동 시 푸시 알림으로 알려줍니다.",
+      "url": "https://easylifelab.site/apps/short-selling-radar/",
+      "image": "https://easylifelab.site/images/short_selling_radar_icon.png",
+      "operatingSystem": "Android, iOS",
+      "applicationCategory": "FinanceApplication",
+      "inLanguage": "ko",
+      "sameAs": [
+        "https://play.google.com/store/apps/details?id=com.youngkiu.short_selling_radar",
+        "https://apps.apple.com/us/app/공매도-레이더/id6772450565"
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "Easy Life Lab",
+        "url": "https://easylifelab.site/"
+      }
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a class="logo-text" href="/">Easy Life Lab</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/#home">홈</a></li>
+                    <li><a href="/#apps">앱</a></li>
+                    <li><a href="/#about">소개</a></li>
+                    <li><a href="/privacy/">개인정보처리방침</a></li>
+                    <li><a href="/support/">고객 지원</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-landing">
+        <section class="app-hero">
+            <div class="container">
+                <img class="app-hero-icon" src="/images/optimized/short_selling_radar_icon_optimized.png" alt="공매도 레이더 앱 아이콘" width="96" height="96">
+                <a class="app-hero-category" href="/#apps-invest"><i class="fas fa-chart-line" aria-hidden="true"></i> 투자/주식</a>
+                <h1>공매도 레이더</h1>
+                <p class="app-hero-lead">종목별 공매도 비중을 한눈에 확인하세요.</p>
+                <div class="app-links">
+                    <a href="https://play.google.com/store/apps/details?id=com.youngkiu.short_selling_radar" target="_blank" rel="noopener" class="store-link">
+                        <img src="/images/optimized/google_play_badge_optimized.png" alt="Google Play에서 다운로드">
+                    </a>
+                    <a href="https://apps.apple.com/us/app/공매도-레이더/id6772450565" target="_blank" rel="noopener" class="store-link">
+                        <img src="/images/optimized/app_store_badge_optimized.png" alt="App Store에서 다운로드">
+                    </a>
+                </div>
+                <p class="app-hero-platform">Android · iOS 지원</p>
+            </div>
+        </section>
+
+        <section class="app-detail">
+            <div class="container">
+                <div class="app-detail-content">
+                    <div class="app-detail-section">
+                        <h2>앱 소개</h2>
+                        <p>종목별 공매도 비중을 자동으로 모니터링하고, 주요 변동 시 푸시 알림으로 알려줍니다.</p>
+                    </div>
+                    <div class="app-detail-section">
+                        <h2>주요 기능</h2>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check" aria-hidden="true"></i><span>종목별 공매도 비중을 자동으로 모니터링합니다.</span></li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i><span>주요 변동 시 푸시 알림으로 알려줍니다.</span></li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i><span>시장별 필터링이 가능합니다.</span></li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i><span>회원가입 없이 간편하게 이용할 수 있습니다.</span></li>
+                        </ul>
+                    </div>
+                    <div class="app-detail-section">
+                        <h2>개인정보 및 지원</h2>
+                        <ul class="info-links">
+                            <li><a href="/privacy/short_selling_radar.html">공매도 레이더 개인정보처리방침</a></li>
+                            <li><a href="/support/">고객 지원 센터</a></li>
+                            <li><a href="mailto:easylifelab.developer@gmail.com">문의하기</a></li>
+                        </ul>
+                    </div>
+                    <a class="btn" href="/#apps-invest">투자/주식 앱 모두 보기</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>Easy Life Lab</h3>
+                </div>
+                <div class="footer-links">
+                    <ul>
+                        <li><a href="/privacy/">개인정보처리방침</a></li>
+                        <li><a href="/support/">고객 지원 센터</a></li>
+                        <li><a href="mailto:easylifelab.developer@gmail.com">문의하기</a></li>
+                    </ul>
+                </div>
+                <div class="footer-copyright">
+                    <p>&copy; 2024 Easy Life Lab. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav" aria-label="모바일 네비게이션">
+        <a href="/" class="bottom-nav-item">
+            <i class="fas fa-home"></i><span>홈</span>
+        </a>
+        <a href="/#apps" class="bottom-nav-item active">
+            <i class="fas fa-th-large"></i><span>앱</span>
+        </a>
+        <a href="/#about" class="bottom-nav-item">
+            <i class="fas fa-info-circle"></i><span>소개</span>
+        </a>
+        <a href="/privacy/" class="bottom-nav-item">
+            <i class="fas fa-shield-alt"></i><span>정책</span>
+        </a>
+        <a href="/support/" class="bottom-nav-item">
+            <i class="fas fa-headset"></i><span>지원</span>
+        </a>
+    </nav>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>
