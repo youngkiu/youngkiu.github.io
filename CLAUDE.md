@@ -20,9 +20,11 @@ There is no build, lint, or test tooling: the site is plain HTML, CSS, and vanil
 - **`css/style.css`**: mobile-first styles shared by the index, privacy, and support pages. Design tokens live in `:root` (warm coral palette, `--primary-color: #FF7B54`), with a `prefers-color-scheme: dark` override. Breakpoints are `min-width: 768px` and `1024px`. `css/privacy.css` adds styles for the privacy pages.
 - **`privacy/index.html`**: a table of contents plus a short summary section for every app, each linking to that app's own page at `privacy/<app_name>.html`.
 - **`download/<app-name>.html`**: standalone pages with their own inline CSS and JS and no shared stylesheet. They detect iOS or Android from the user agent and redirect to the right store, so one link works on either OS. New ones are copied from a recent compact page such as `stock-trend-signal.html`.
-- **`apps/invest.html`**: a sharing landing page with its own OG image (`images/og_invest.png`) that JS-redirects to `/#apps-invest`.
+  - Every download page has `<meta name="robots" content="noindex">` and is left out of the sitemap. Googlebot's smartphone user agent contains `Android`, so it gets redirected too, and the page can't be indexed as itself.
+  - Every download page has OG tags so shared links (KakaoTalk and similar) show a preview. `description` and `og:description` copy the app's card description in `index.html`. `og:image` is the original icon `images/<app>_icon.png`, or `images/og_image.png` if the icon is under 200px. `twitter:card` is `summary` for a square icon and `summary_large_image` for the landscape `og_image.png`, since `summary` crops the image to a square.
+- **`apps/invest.html`**: a sharing landing page with its own OG image (`images/og_invest.png`) that JS-redirects to `/#apps-invest`. It redirects every visitor, Googlebot included, so like the download pages it has `noindex` and is left out of the sitemap.
 - **`lab/`**: standalone ML visualization pages. They are not linked from the homepage but are listed in the sitemap.
-- **`sitemap.xml`**: maintained by hand. It lists every download page and every app privacy page.
+- **`sitemap.xml`**: maintained by hand. It lists only indexable pages: the home page, every privacy page, support, and `lab/`. Each entry has a `lastmod`, the date of the page's last commit. When you change a listed page, update its `lastmod` in the same PR.
 
 ## Naming Conventions
 
@@ -54,9 +56,9 @@ This happens in two separate PRs, at different times. Do only the stage that was
 2. **Homepage**, after store approval, once the store URLs exist. Put all of these in one PR:
    - an app card in the right category in `index.html` (new apps get the `NEW` badge)
    - the original icon in `images/` and the optimized icon in `images/optimized/`
-   - `download/<app-name>.html` (this needs both store URLs)
+   - `download/<app-name>.html`, which needs both store URLs and the `noindex` and OG tags described above
    - a TOC entry and summary section in `privacy/index.html`
-   - download and privacy entries in `sitemap.xml`
+   - a `sitemap.xml` entry with `lastmod` for the privacy page, plus updated `lastmod` values for `/` and `/privacy/` (download pages are not listed)
    - the app in the matching category table in `README.md`
 
 ## Content Rules
