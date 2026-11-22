@@ -48,7 +48,7 @@ Easy Life Lab은 사용자의 일상을 더 편리하게 만드는 모바일 앱
 ├── index.html          # 메인 홈페이지 (모바일 우선)
 ├── css/style.css       # 메인 스타일시트
 ├── js/main.js          # 카테고리 필터, 바텀 네비게이션 등
-├── apps/               # 카테고리별 OG 미리보기 랜딩 페이지
+├── apps/               # 앱별 랜딩 페이지(apps/<slug>/) · 카테고리 공유용 페이지(invest.html)
 ├── download/           # 앱 다운로드 페이지 (iOS/Android 자동 리디렉션)
 ├── privacy/            # 각 앱의 개인정보처리방침 페이지
 ├── support/            # 고객 지원 페이지

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Homepage for Easy Life Lab (https://easylifelab.site), a static site on GitHub Pages. It lists the team's mobile apps, hosts a privacy policy for each one, and has store download pages for most of them (카드 뭐 내지? and 맛도리 지도 have none). The current app list, grouped by category, is in `README.md`. All content is Korean (`lang="ko"`) in a formal, polite tone.
+Homepage for Easy Life Lab (https://easylifelab.site), a static site on GitHub Pages. It lists the team's mobile apps and gives each one a landing page and a privacy policy. Most apps also have a store download page (카드 뭐 내지? and 맛도리 지도 have none). The current app list, grouped by category, is in `README.md`. All content is Korean (`lang="ko"`) in a formal, polite tone.
 
 ## Development
 
@@ -15,16 +15,20 @@ There is no build, lint, or test tooling: the site is plain HTML, CSS, and vanil
 
 ## Architecture
 
-- **`index.html`**: the only landing page. Apps are grouped in `<div class="app-category" data-category="invest|life|map">` blocks. Each app is an `.app-card` with an icon, title, optional badge (`<span class="app-badge hot|new|popular">`), description, `.tech-tag`s, and store badge links.
+- **`index.html`**: the homepage. Apps are grouped in `<div class="app-category" data-category="invest|life|map">` blocks. Each app is an `.app-card` with an icon, title, optional badge (`<span class="app-badge hot|new|popular">`), description, `.tech-tag`s, and store badge links. The card title links to the app's landing page (`<h3><a href="apps/<slug>/">`).
+- **`apps/<slug>/index.html`**: one indexable landing page per app, served at `/apps/<slug>/`, which is also its canonical URL.
+  - Each page has its own `<title>` in the form `<앱 이름> - <키워드> 앱 | Easy Life Lab`, plus description, canonical, OG tags, `MobileApplication` JSON-LD, store badges, the download page's feature list, and a link to the app's privacy page.
+  - The description and feature text are copied from the app's card in `index.html` and its download page, so update all three together.
+  - Pages use root-absolute paths (`/css/style.css`). They are standalone copies with no templating, so a change to the shared header, footer, or bottom nav has to be made in every landing page and in `index.html`.
 - **`js/main.js`**: handles category tab filtering (`.category-tab[data-category]`), URL anchors `#apps-<category>`, the active state of the mobile bottom nav, and scroll animations. Anchors are checked against the `validCategories` array, so a new category has to be added there.
-- **`css/style.css`**: mobile-first styles shared by the index, privacy, and support pages. Design tokens live in `:root` (warm coral palette, `--primary-color: #FF7B54`), with a `prefers-color-scheme: dark` override. Breakpoints are `min-width: 768px` and `1024px`. `css/privacy.css` adds styles for the privacy pages.
+- **`css/style.css`**: mobile-first styles shared by the index, landing, privacy, and support pages. Design tokens live in `:root` (warm coral palette, `--primary-color: #FF7B54`), with a `prefers-color-scheme: dark` override. Breakpoints are `min-width: 768px` and `1024px`. `css/privacy.css` adds styles for the privacy pages.
 - **`privacy/index.html`**: a table of contents plus a short summary section for every app, each linking to that app's own page at `privacy/<app_name>.html`.
 - **`download/<app-name>.html`**: standalone pages with their own inline CSS and JS and no shared stylesheet. They detect iOS or Android from the user agent and redirect to the right store, so one link works on either OS. New ones are copied from a recent compact page such as `stock-trend-signal.html`.
   - Every download page has `<meta name="robots" content="noindex">` and is left out of the sitemap. Googlebot's smartphone user agent contains `Android`, so it gets redirected too, and the page can't be indexed as itself.
   - Every download page has OG tags so shared links (KakaoTalk and similar) show a preview. `description` and `og:description` copy the app's card description in `index.html`. `og:image` is the original icon `images/<app>_icon.png`, or `images/og_image.png` if the icon is under 200px. `twitter:card` is `summary` for a square icon and `summary_large_image` for the landscape `og_image.png`, since `summary` crops the image to a square.
 - **`apps/invest.html`**: a sharing landing page with its own OG image (`images/og_invest.png`) that JS-redirects to `/#apps-invest`. It redirects every visitor, Googlebot included, so like the download pages it has `noindex` and is left out of the sitemap.
 - **`lab/`**: standalone ML visualization pages. They are not linked from the homepage but are listed in the sitemap.
-- **`sitemap.xml`**: maintained by hand. It lists only indexable pages: the home page, every privacy page, support, and `lab/`. Each entry has a `lastmod`, the date of the page's last commit. When you change a listed page, update its `lastmod` in the same PR.
+- **`sitemap.xml`**: maintained by hand. It lists only indexable pages: the home page, every app landing page, every privacy page, support, and `lab/`. Each entry has a `lastmod`, the date of the page's last commit. When you change a listed page, update its `lastmod` in the same PR.
 
 ## Naming Conventions
 
@@ -35,14 +39,15 @@ Each app has one slug, written in different forms depending on the file. Newer a
 | Privacy page | `privacy/stock_trend_signal.html` (snake_case) |
 | Section id in `privacy/index.html` | `#stock-trend-signal` |
 | Download page | `download/stock-trend-signal.html` (kebab-case) |
-| Icons | `images/stock_trend_signal_icon.png` (original) and `images/optimized/stock_trend_signal_icon_optimized.png` (used by the pages) |
+| Landing page | `apps/stock-trend-signal/index.html`, served at `/apps/stock-trend-signal/`. It uses the same slug as the download page. Apps without a download page use the privacy name in kebab-case (`apps/card-alarm/`, `apps/tasty-map/`). |
+| Icons | `images/stock_trend_signal_icon.png` (original) and `images/optimized/stock_trend_signal_icon_optimized.png` (160px, used by the cards and download pages). The landing page hero uses `images/optimized/stock_trend_signal_icon_hero.png`, made with `sips -Z 288 <original> --out <hero>`, so it stays sharp at 96–120px on 2x and 3x screens. If the original is 288px or smaller, the hero uses the original instead of an upscaled copy. |
 | Android package | `com.youngkiu.stock_trend_signal` |
 
 Older apps don't follow it. Copy their names from the existing files instead of building them from the pattern:
 
 | App | Exceptions |
 |---|---|
-| 복용일지 | privacy `medication_diary.html`, download `pilltime.html`, package `com.youngkiu.pilltime`. The homepage card uses `app_logo.png` in the repo root, while the download page uses `images/optimized/medication_diary_icon_optimized.png`. |
+| 복용일지 | privacy `medication_diary.html`, download `pilltime.html`, landing `apps/pilltime/`, package `com.youngkiu.pilltime`. The homepage card uses `app_logo.png` in the repo root, while the download and landing pages use `images/optimized/medication_diary_icon_optimized.png`. |
 | 종점 출발 버스 | privacy `busdeparture.html`, icon `busdeparture_icon*.png`, package `com.youngkiu.busdeparture` (the download page is still `bus-departure.html`) |
 | 콜키지 맵 | package `com.youngkiu.corkage_free` |
 | 다가오는 배당락 | package `com.youngkiu.upcoming_dividend.upcoming_dividend` |
@@ -55,10 +60,11 @@ This happens in two separate PRs, at different times. Do only the stage that was
 1. **Privacy policy**, before store submission, because store review needs its URL. Add only `privacy/<app_name>.html`, copied from a recent one, and update the `최종 업데이트` and `시행일` dates.
 2. **Homepage**, after store approval, once the store URLs exist. Put all of these in one PR:
    - an app card in the right category in `index.html` (new apps get the `NEW` badge)
-   - the original icon in `images/` and the optimized icon in `images/optimized/`
+   - the original icon in `images/`, plus the optimized icon and the 288px hero icon in `images/optimized/`
    - `download/<app-name>.html`, which needs both store URLs and the `noindex` and OG tags described above
+   - `apps/<slug>/index.html`, copied from an existing landing page, with the card title in `index.html` linking to it
    - a TOC entry and summary section in `privacy/index.html`
-   - a `sitemap.xml` entry with `lastmod` for the privacy page, plus updated `lastmod` values for `/` and `/privacy/` (download pages are not listed)
+   - `sitemap.xml` entries with `lastmod` for the landing page and the privacy page, plus updated `lastmod` values for `/` and `/privacy/` (download pages are not listed)
    - the app in the matching category table in `README.md`
 
 ## Content Rules

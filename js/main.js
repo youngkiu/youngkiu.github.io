@@ -58,7 +58,8 @@ document.addEventListener('DOMContentLoaded', function() {
         appCategories.forEach(section => {
             section.style.display = (cat === 'all' || section.dataset.category === cat) ? '' : 'none';
         });
-        appsSection.classList.toggle('filtered', cat !== 'all');
+        // 앱 랜딩 페이지(apps/<slug>/)에는 .apps 섹션이 없다
+        appsSection?.classList.toggle('filtered', cat !== 'all');
     }
 
     categoryTabs.forEach(tab => {
