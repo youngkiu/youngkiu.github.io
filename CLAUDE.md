@@ -40,7 +40,7 @@ Each app has one slug, written in different forms depending on the file. Newer a
 | Section id in `privacy/index.html` | `#stock-trend-signal` |
 | Download page | `download/stock-trend-signal.html` (kebab-case) |
 | Landing page | `apps/stock-trend-signal/index.html`, served at `/apps/stock-trend-signal/`. It uses the same slug as the download page. Apps without a download page use the privacy name in kebab-case (`apps/card-alarm/`, `apps/tasty-map/`). |
-| Icons | `images/stock_trend_signal_icon.png` (original) and `images/optimized/stock_trend_signal_icon_optimized.png` (used by the pages) |
+| Icons | `images/stock_trend_signal_icon.png` (original) and `images/optimized/stock_trend_signal_icon_optimized.png` (160px, used by the cards and download pages). The landing page hero uses `images/optimized/stock_trend_signal_icon_hero.png`, made with `sips -Z 288 <original> --out <hero>`, so it stays sharp at 96–120px on 2x and 3x screens. If the original is 288px or smaller, the hero uses the original instead of an upscaled copy. |
 | Android package | `com.youngkiu.stock_trend_signal` |
 
 Older apps don't follow it. Copy their names from the existing files instead of building them from the pattern:
@@ -60,7 +60,7 @@ This happens in two separate PRs, at different times. Do only the stage that was
 1. **Privacy policy**, before store submission, because store review needs its URL. Add only `privacy/<app_name>.html`, copied from a recent one, and update the `최종 업데이트` and `시행일` dates.
 2. **Homepage**, after store approval, once the store URLs exist. Put all of these in one PR:
    - an app card in the right category in `index.html` (new apps get the `NEW` badge)
-   - the original icon in `images/` and the optimized icon in `images/optimized/`
+   - the original icon in `images/`, plus the optimized icon and the 288px hero icon in `images/optimized/`
    - `download/<app-name>.html`, which needs both store URLs and the `noindex` and OG tags described above
    - `apps/<slug>/index.html`, copied from an existing landing page, with the card title in `index.html` linking to it
    - a TOC entry and summary section in `privacy/index.html`
